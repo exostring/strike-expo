@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strike Expo Control</title>
+    <link rel="icon" href="favi.png" type="image/png">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: #090909;
+            color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+            padding: 18px 28px;
+            background: rgba(10,10,10,0.96);
+            border-bottom: 1px solid rgba(220,185,106,0.24);
+        }
+        main {
+            width: min(1180px, calc(100% - 32px));
+            margin: 28px auto 80px;
+        }
+        h1, h2, h3 { margin: 0; text-transform: uppercase; }
+        h1 { font-size: 24px; }
+        h2 { color: #dcb96a; font-size: 19px; margin-bottom: 16px; }
+        h3 { color: #dcb96a; font-size: 15px; margin: 0 0 12px; }
+        section, .card {
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+        label { display: block; color: #aaa; font-size: 13px; margin-bottom: 6px; }
+        input, textarea {
+            width: 100%;
+            color: #fff;
+            background: #111;
+            border: 1px solid rgba(255,255,255,0.16);
+            padding: 10px 12px;
+            font: inherit;
+            outline: none;
+        }
+        textarea { min-height: 90px; resize: vertical; }
+        input:focus, textarea:focus { border-color: #dcb96a; }
+        button {
+            cursor: pointer;
+            border: 1px solid #dcb96a;
+            background: #dcb96a;
+            color: #050505;
+            font-weight: 800;
+            padding: 11px 18px;
+            text-transform: uppercase;
+        }
+        button.secondary {
+            background: transparent;
+            color: #dcb96a;
+        }
+        button.danger {
+            border-color: #d66;
+            color: #fff;
+            background: #7d2525;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .muted { color: #888; font-size: 13px; }
+        .status { min-height: 20px; color: #dcb96a; }
+        .login {
+            max-width: 420px;
+            margin: 14vh auto;
+        }
+        .hidden { display: none; }
+        .participant-preview {
+            width: 72px;
+            height: 72px;
+            object-fit: cover;
+            background: #050505;
+            border: 1px solid rgba(220,185,106,0.24);
+        }
+        .participant-head {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 14px;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        @media (max-width: 760px) {
+            header { align-items: flex-start; flex-direction: column; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <main id="login" class="login">
+        <section>
+            <h1>Strike Expo Control</h1>
+            <p class="muted">Секретный адрес + пароль из Coolify env.</p>
+            <label for="password">Пароль</label>
+            <input id="password" type="password" autocomplete="current-password">
+            <div class="actions">
+                <button id="loginBtn">Войти</button>
+            </div>
+            <p id="loginStatus" class="status"></p>
+        </section>
+    </main>
+
+    <div id="app" class="hidden">
+        <header>
+            <div>
+                <h1>Strike Expo Control</h1>
+                <div id="status" class="status"></div>
+            </div>
+            <div class="row">
+                <a class="muted" href="/" target="_blank">Открыть сайт</a>
+                <button id="saveBtn">Сохранить</button>
+            </div>
+        </header>
+
+        <main>
+            <section>
+                <h2>Первый экран</h2>
+                <div class="grid">
+                    <field-input path="texts.hero.kicker" label="Верхняя метка"></field-input>
+                    <field-input path="texts.hero.titleBefore" label="Заголовок до span"></field-input>
+                    <field-input path="texts.hero.titleAccent" label="Золотой span"></field-input>
+                    <field-input path="texts.hero.titleAfter" label="Заголовок после span"></field-input>
+                    <field-area path="texts.hero.subtitle" label="Описание"></field-area>
+                    <field-input path="texts.hero.city" label="Город"></field-input>
+                    <field-input path="texts.hero.date" label="Дата"></field-input>
+                    <field-input path="texts.hero.venue" label="Площадка"></field-input>
+                    <field-input path="texts.hero.address" label="Адрес"></field-input>
+                </div>
+            </section>
+
+            <section>
+                <h2>О мероприятии</h2>
+                <div class="grid">
+                    <field-input path="texts.about.title" label="Заголовок"></field-input>
+                    <field-area path="texts.about.paragraphs.0" label="Абзац 1"></field-area>
+                    <field-area path="texts.about.highlight" label="Выделенный текст"></field-area>
+                    <field-area path="texts.about.paragraphs.1" label="Абзац 2"></field-area>
+                </div>
+            </section>
+
+            <section>
+                <h2>Что нас ждёт</h2>
+                <field-input path="texts.featuresTitle" label="Заголовок блока"></field-input>
+                <div id="features"></div>
+                <button class="secondary" id="addFeature">Добавить карточку</button>
+            </section>
+
+            <section>
+                <h2>Локация</h2>
+                <div class="grid">
+                    <field-input path="texts.location.title" label="Заголовок"></field-input>
+                    <field-area path="texts.location.paragraphs.0" label="Абзац 1"></field-area>
+                    <field-area path="texts.location.paragraphs.1" label="Абзац 2"></field-area>
+                    <field-input path="texts.location.address" label="Адрес"></field-input>
+                    <field-input path="texts.location.schemaTitle" label="Заголовок схемы"></field-input>
+                    <field-input path="texts.route.title" label="Заголовок карты"></field-input>
+                    <field-area path="texts.route.description" label="Текст карты"></field-area>
+                </div>
+            </section>
+
+            <section>
+                <h2>Участники</h2>
+                <div class="grid">
+                    <field-input path="texts.exhibitors.title" label="Заголовок блока"></field-input>
+                    <field-area path="texts.exhibitors.description" label="Описание блока"></field-area>
+                </div>
+                <div id="participants"></div>
+                <button class="secondary" id="addParticipant">Добавить участника</button>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        let content = null;
+        const base = location.pathname.replace(/\/$/, '');
+
+        document.getElementById('loginBtn').addEventListener('click', login);
+        document.getElementById('password').addEventListener('keydown', event => {
+            if (event.key === 'Enter') login();
+        });
+        document.getElementById('saveBtn').addEventListener('click', save);
+        document.getElementById('addFeature').addEventListener('click', () => {
+            content.features.push({ title: 'Новая карточка', text: '' });
+            render();
+        });
+        document.getElementById('addParticipant').addEventListener('click', () => {
+            content.participants.push({ name: 'Новый участник', stand: '', description: '', logo: 'img/logo.png', visible: true });
+            render();
+        });
+
+        load();
+
+        async function load() {
+            const response = await fetch(`${base}/api/content`);
+            if (response.status === 401) return showLogin();
+            content = await response.json();
+            document.getElementById('login').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+            render();
+        }
+
+        async function login() {
+            setLoginStatus('Проверяю...');
+            const password = document.getElementById('password').value;
+            const response = await fetch(`${base}/api/login`, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ password })
+            });
+            if (!response.ok) return setLoginStatus('Не подошёл пароль');
+            setLoginStatus('');
+            load();
+        }
+
+        async function save() {
+            setStatus('Сохраняю...');
+            collectFields();
+            const response = await fetch(`${base}/api/content`, {
+                method: 'PUT',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify(content)
+            });
+            if (!response.ok) return setStatus('Ошибка сохранения');
+            content = (await response.json()).content;
+            setStatus('Сохранено');
+        }
+
+        function render() {
+            bindFields();
+            renderFeatures();
+            renderParticipants();
+        }
+
+        function bindFields() {
+            document.querySelectorAll('[path]').forEach(node => {
+                const input = fieldControl(node);
+                input.value = get(node.getAttribute('path')) || '';
+            });
+        }
+
+        function renderFeatures() {
+            const box = document.getElementById('features');
+            box.textContent = '';
+            content.features.forEach((item, index) => {
+                const card = div('card');
+                card.innerHTML = `
+                    <h3>Карточка ${index + 1}</h3>
+                    <label>Заголовок</label>
+                    <input data-feature="${index}" data-key="title">
+                    <label>Текст</label>
+                    <textarea data-feature="${index}" data-key="text"></textarea>
+                    <div class="actions">
+                        <button class="secondary" data-move-feature="${index}" data-dir="-1">Выше</button>
+                        <button class="secondary" data-move-feature="${index}" data-dir="1">Ниже</button>
+                        <button class="danger" data-delete-feature="${index}">Удалить</button>
+                    </div>
+                `;
+                card.querySelector('[data-key="title"]').value = item.title || '';
+                card.querySelector('[data-key="text"]').value = item.text || '';
+                box.append(card);
+            });
+        }
+
+        function renderParticipants() {
+            const box = document.getElementById('participants');
+            box.textContent = '';
+            content.participants.forEach((item, index) => {
+                const card = div('card');
+                card.innerHTML = `
+                    <div class="participant-head">
+                        <img class="participant-preview" src="${escapeAttr(item.logo || 'img/logo.png')}" alt="">
+                        <div>
+                            <h3>${escapeHtml(item.name || 'Участник')}</h3>
+                            <label><input type="checkbox" data-participant="${index}" data-key="visible"> Показывать на сайте</label>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div><label>Название</label><input data-participant="${index}" data-key="name"></div>
+                        <div><label>Стенд</label><input data-participant="${index}" data-key="stand"></div>
+                        <div><label>Логотип: путь или URL</label><input data-participant="${index}" data-key="logo"></div>
+                        <div><label>Загрузить логотип</label><input type="file" accept="image/png,image/jpeg,image/webp" data-upload="${index}"></div>
+                    </div>
+                    <label>Описание</label>
+                    <textarea data-participant="${index}" data-key="description"></textarea>
+                    <div class="actions">
+                        <button class="secondary" data-move-participant="${index}" data-dir="-1">Выше</button>
+                        <button class="secondary" data-move-participant="${index}" data-dir="1">Ниже</button>
+                        <button class="danger" data-delete-participant="${index}">Удалить</button>
+                    </div>
+                `;
+                card.querySelector('[data-key="visible"]').checked = item.visible !== false;
+                ['name', 'stand', 'logo', 'description'].forEach(key => {
+                    card.querySelector(`[data-key="${key}"]`).value = item[key] || '';
+                });
+                box.append(card);
+            });
+        }
+
+        document.addEventListener('input', event => {
+            const f = event.target.dataset.feature;
+            const p = event.target.dataset.participant;
+            if (f !== undefined) content.features[Number(f)][event.target.dataset.key] = event.target.value;
+            if (p !== undefined) {
+                const key = event.target.dataset.key;
+                content.participants[Number(p)][key] = key === 'visible' ? event.target.checked : event.target.value;
+                if (key === 'name') renderParticipants();
+            }
+        });
+
+        document.addEventListener('click', event => {
+            const feature = event.target.dataset.moveFeature;
+            const participant = event.target.dataset.moveParticipant;
+            if (event.target.dataset.deleteFeature) {
+                content.features.splice(Number(event.target.dataset.deleteFeature), 1);
+                renderFeatures();
+            }
+            if (event.target.dataset.deleteParticipant) {
+                content.participants.splice(Number(event.target.dataset.deleteParticipant), 1);
+                renderParticipants();
+            }
+            if (feature !== undefined) move(content.features, Number(feature), Number(event.target.dataset.dir), renderFeatures);
+            if (participant !== undefined) move(content.participants, Number(participant), Number(event.target.dataset.dir), renderParticipants);
+        });
+
+        document.addEventListener('change', async event => {
+            const index = event.target.dataset.upload;
+            if (index === undefined || !event.target.files?.[0]) return;
+            const file = event.target.files[0];
+            setStatus('Загружаю логотип...');
+            const dataUrl = await fileToDataUrl(file);
+            const response = await fetch(`${base}/api/upload`, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, dataUrl })
+            });
+            if (!response.ok) return setStatus('Не удалось загрузить логотип');
+            content.participants[Number(index)].logo = (await response.json()).path;
+            setStatus('Логотип загружен, нажми Сохранить');
+            renderParticipants();
+        });
+
+        function collectFields() {
+            document.querySelectorAll('[path]').forEach(node => set(node.getAttribute('path'), fieldControl(node).value));
+        }
+
+        function fieldControl(node) {
+            if (!node.firstElementChild) {
+                const label = document.createElement('label');
+                label.textContent = node.getAttribute('label');
+                const input = node.tagName.toLowerCase() === 'field-area' ? document.createElement('textarea') : document.createElement('input');
+                node.append(label, input);
+            }
+            return node.querySelector('input, textarea');
+        }
+
+        function get(path) {
+            return path.split('.').reduce((value, key) => value?.[key], content);
+        }
+
+        function set(path, value) {
+            const keys = path.split('.');
+            const last = keys.pop();
+            let target = content;
+            keys.forEach((key, index) => {
+                if (target[key] === undefined) target[key] = /^\d+$/.test(keys[index + 1]) ? [] : {};
+                target = target[key];
+            });
+            target[last] = value;
+        }
+
+        function move(list, index, dir, rerender) {
+            const next = index + dir;
+            if (next < 0 || next >= list.length) return;
+            [list[index], list[next]] = [list[next], list[index]];
+            rerender();
+        }
+
+        function fileToDataUrl(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function showLogin() {
+            document.getElementById('login').classList.remove('hidden');
+            document.getElementById('app').classList.add('hidden');
+        }
+
+        function setStatus(value) { document.getElementById('status').textContent = value; }
+        function setLoginStatus(value) { document.getElementById('loginStatus').textContent = value; }
+        function div(className) { const node = document.createElement('div'); node.className = className; return node; }
+        function escapeHtml(value) { return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char])); }
+        function escapeAttr(value) { return escapeHtml(value); }
+    </script>
+</body>
+</html>
