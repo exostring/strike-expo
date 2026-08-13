@@ -32,15 +32,25 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Use vmin for color stops! This guarantees the circle fits perfectly inside the screen 
         if (bgImage) {
-            const imgGradient = `radial-gradient(circle at 50% ${centerY}px, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 45vmin, rgba(0,0,0,0.5) 120vmin, rgba(0,0,0,1) 230vmin)`;
-            bgImage.style.maskImage = imgGradient;
-            bgImage.style.webkitMaskImage = imgGradient;
+            if (isMobile) {
+                bgImage.style.maskImage = '';
+                bgImage.style.webkitMaskImage = '';
+            } else {
+                const imgGradient = `radial-gradient(circle at 50% ${centerY}px, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 45vmin, rgba(0,0,0,0.5) 120vmin, rgba(0,0,0,1) 230vmin)`;
+                bgImage.style.maskImage = imgGradient;
+                bgImage.style.webkitMaskImage = imgGradient;
+            }
             bgImage.style.backgroundPosition = isMobile ? `50% calc(50% + ${currentTranslate * 0.45}px)` : 'center';
         }
         if (bgGrid) {
-            const gridGradient = `radial-gradient(circle at 50% ${centerY}px, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35vmin, rgba(0,0,0,0.5) 90vmin, rgba(0,0,0,1) 230vmin)`;
-            bgGrid.style.maskImage = gridGradient;
-            bgGrid.style.webkitMaskImage = gridGradient;
+            if (isMobile) {
+                bgGrid.style.maskImage = '';
+                bgGrid.style.webkitMaskImage = '';
+            } else {
+                const gridGradient = `radial-gradient(circle at 50% ${centerY}px, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35vmin, rgba(0,0,0,0.5) 90vmin, rgba(0,0,0,1) 230vmin)`;
+                bgGrid.style.maskImage = gridGradient;
+                bgGrid.style.webkitMaskImage = gridGradient;
+            }
             bgGrid.style.backgroundPosition = isMobile ? `0 ${currentTranslate * 0.35}px` : '0 0';
         }
         
@@ -56,6 +66,30 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initial call
     updateParallax();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const map = document.querySelector('.yandex-map[data-src]');
+    if (!map) return;
+
+    const loadMap = () => {
+        if (!map.src || map.src === 'about:blank') {
+            map.src = map.dataset.src;
+        }
+    };
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+            if (entries.some(entry => entry.isIntersecting)) {
+                loadMap();
+                observer.disconnect();
+            }
+        }, { rootMargin: '1200px' });
+        observer.observe(map);
+    }
+
+    const idle = window.requestIdleCallback || (callback => setTimeout(callback, 1400));
+    window.addEventListener('load', () => idle(loadMap, { timeout: 3000 }), { once: true });
 });
 
 document.addEventListener('DOMContentLoaded', () => {

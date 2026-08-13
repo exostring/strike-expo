@@ -245,6 +245,8 @@ body {
     position: absolute;
     bottom: 0;
     right: 0;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .hero-content {
@@ -532,12 +534,17 @@ body {
         top: 0; right: 0;
         margin-bottom: -50px; 
         justify-content: center;
+        -webkit-mask-image: none;
+        mask-image: none;
+        contain: paint;
     }
     
     .hero-img {
         position: relative;
         height: 100%;
         max-height: none;
+        width: auto;
+        will-change: transform;
     }
     
     .hero-content {
