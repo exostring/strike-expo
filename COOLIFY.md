@@ -16,7 +16,7 @@ PUBLIC_BASE_URL=https://panel.strike-expo.ru
 ADMIN_PATH=/control-change-this-secret-path
 ADMIN_PASSWORD=change-this-password
 SESSION_SECRET=change-this-long-random-secret
-DATA_DIR=/data
+DATA_DIR=/app/data
 ```
 
 `ADMIN_PATH` не должен быть `/admin`. Это скрытый адрес входа в редактор.
@@ -26,17 +26,17 @@ DATA_DIR=/data
 Подключить volume:
 
 ```text
-/data
+/app/data
 ```
 
 Внутри него будут:
 
 ```text
-/data/content.json
-/data/uploads/
+/app/data/content.json
+/app/data/uploads/
 ```
 
-Если `/data/content.json` отсутствует, сервер создаст его из `content.seed.json`.
+Если `/app/data/content.json` отсутствует, сервер создаст его из `content.seed.json`.
 
 ## Build
 
