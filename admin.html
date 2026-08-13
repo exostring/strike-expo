@@ -170,7 +170,6 @@
                 <h2>Что нас ждёт</h2>
                 <field-input path="texts.featuresTitle" label="Заголовок блока"></field-input>
                 <div id="features"></div>
-                <button class="secondary" id="addFeature">Добавить карточку</button>
             </section>
 
             <section>
@@ -195,25 +194,70 @@
                 <div id="participants"></div>
                 <button class="secondary" id="addParticipant">Добавить участника</button>
             </section>
+
+            <section>
+                <h2>Юридический текст</h2>
+                <div class="grid">
+                    <field-input path="texts.legal.kicker" label="Верхняя метка"></field-input>
+                    <field-input path="texts.legal.title" label="Заголовок"></field-input>
+                    <field-input path="texts.legal.subtitle" label="Подзаголовок"></field-input>
+                    <field-input path="texts.legal.date" label="Дата публикации"></field-input>
+                </div>
+                <field-area path="texts.legal.body" label="Текст. Заголовки: ## Заголовок, списки: - пункт"></field-area>
+            </section>
         </main>
     </div>
 
     <script>
         let content = null;
         const base = location.pathname.replace(/\/$/, '');
+        const defaultLegal = {
+            kicker: 'Strike Expo',
+            title: 'Публичная оферта',
+            subtitle: 'Договор розничной купли-продажи товара дистанционным способом',
+            date: 'Дата публикации: 20 июня 2026 г.',
+            body: `Настоящий документ является публичной офертой интернет-магазина strike-expo.ru о продаже товаров дистанционным способом и адресован неограниченному кругу лиц.
+
+## 1. Общие положения
+1.1. Настоящая публичная оферта является официальным предложением Индивидуального предпринимателя ГАННОШИНОЙ ОЛЬГИ АНАТОЛЬЕВНЫ в адрес любого физического лица заключить договор розничной купли-продажи товара дистанционным способом.
+1.2. Оформление заказа на Сайте означает полное и безоговорочное принятие условий настоящей Оферты, Политики конфиденциальности и Пользовательского соглашения.
+1.3. Продавец вправе вносить изменения в Оферту без предварительного уведомления. Изменения вступают в силу с момента размещения на Сайте.
+
+## 2. Предмет Оферты
+2.1. Продавец обязуется передать Покупателю товар на основании оформленных Заказов, а Покупатель обязуется принять и оплатить товар.
+2.2. Наименование, цена, количество товара и прочие существенные условия определяются на основании сведений, указанных Покупателем при оформлении заказа.
+
+## 3. Стоимость товара и порядок расчётов
+3.1. Цены на товар устанавливаются Продавцом и указываются на страницах Сайта https://strike-expo.ru.
+3.2. Цена товара указывается в рублях Российской Федерации.
+
+## 4. Момент заключения договора
+4.1. Акцептом настоящей Оферты является оформление Покупателем заказа на Сайте.
+4.2. Акцептируя Оферту, Покупатель подтверждает добровольную передачу персональных данных для исполнения заказа.
+
+## 5. Возврат товара и денежных средств
+5.1. Возврат товара осуществляется в соответствии с Законом Российской Федерации «О защите прав потребителей».
+5.2. Возврат денежных средств производится в сроки, предусмотренные действующим законодательством.
+
+## 6. Доставка товара
+6.1. Доставка товара осуществляется в сроки, согласованные Сторонами при подтверждении заказа.
+6.2. После получения товара претензии к количеству, комплектности и внешнему виду не принимаются.
+
+## 7. Реквизиты Продавца
+Индивидуальный предприниматель: ГАННОШИНА ОЛЬГА АНАТОЛЬЕВНА
+ИНН: 667305409853
+ОГРНИП: 325665800159432
+Email: strikeexpo@yandex.ru`
+        };
 
         document.getElementById('loginBtn').addEventListener('click', login);
         document.getElementById('password').addEventListener('keydown', event => {
             if (event.key === 'Enter') login();
         });
         document.getElementById('saveBtn').addEventListener('click', save);
-        document.getElementById('addFeature').addEventListener('click', () => {
-            content.features.push({ title: 'Новая карточка', text: '' });
-            render();
-        });
         document.getElementById('addParticipant').addEventListener('click', () => {
             content.participants.push({ name: 'Новый участник', stand: '', description: '', logo: 'img/logo.png', visible: true });
-            render();
+            renderParticipants();
         });
 
         load();
@@ -254,9 +298,15 @@
         }
 
         function render() {
+            ensureLegal();
             bindFields();
             renderFeatures();
             renderParticipants();
+        }
+
+        function ensureLegal() {
+            content.texts ||= {};
+            content.texts.legal = { ...defaultLegal, ...(content.texts.legal || {}) };
         }
 
         function bindFields() {
@@ -277,11 +327,6 @@
                     <input data-feature="${index}" data-key="title">
                     <label>Текст</label>
                     <textarea data-feature="${index}" data-key="text"></textarea>
-                    <div class="actions">
-                        <button class="secondary" data-move-feature="${index}" data-dir="-1">Выше</button>
-                        <button class="secondary" data-move-feature="${index}" data-dir="1">Ниже</button>
-                        <button class="danger" data-delete-feature="${index}">Удалить</button>
-                    </div>
                 `;
                 card.querySelector('[data-key="title"]').value = item.title || '';
                 card.querySelector('[data-key="text"]').value = item.text || '';
@@ -331,22 +376,15 @@
             if (p !== undefined) {
                 const key = event.target.dataset.key;
                 content.participants[Number(p)][key] = key === 'visible' ? event.target.checked : event.target.value;
-                if (key === 'name') renderParticipants();
             }
         });
 
         document.addEventListener('click', event => {
-            const feature = event.target.dataset.moveFeature;
             const participant = event.target.dataset.moveParticipant;
-            if (event.target.dataset.deleteFeature) {
-                content.features.splice(Number(event.target.dataset.deleteFeature), 1);
-                renderFeatures();
-            }
-            if (event.target.dataset.deleteParticipant) {
+            if (event.target.dataset.deleteParticipant !== undefined) {
                 content.participants.splice(Number(event.target.dataset.deleteParticipant), 1);
                 renderParticipants();
             }
-            if (feature !== undefined) move(content.features, Number(feature), Number(event.target.dataset.dir), renderFeatures);
             if (participant !== undefined) move(content.participants, Number(participant), Number(event.target.dataset.dir), renderParticipants);
         });
 

@@ -32,10 +32,11 @@
         <article class="legal-document glass-panel">
             <div class="bracket-tl"></div>
             <div class="bracket-br"></div>
-            <p class="legal-kicker">Strike Expo</p>
-            <h1>Публичная оферта</h1>
-            <p class="legal-subtitle">Договор розничной купли-продажи товара дистанционным способом</p>
+            <p class="legal-kicker" data-legal="kicker">Strike Expo</p>
+            <h1 data-legal="title">Публичная оферта</h1>
+            <p class="legal-subtitle" data-legal="subtitle">Договор розничной купли-продажи товара дистанционным способом</p>
 
+            <div data-legal="body">
             <p>Настоящий документ является публичной офертой (предложением) интернет-магазина strike-expo.ru о продаже товаров дистанционным способом и адресован неограниченному кругу лиц.</p>
 
             <h2>1. Общие положения</h2>
@@ -117,8 +118,63 @@
                 <dt>Email</dt>
                 <dd><a href="mailto:strikeexpo@yandex.ru">strikeexpo@yandex.ru</a></dd>
             </dl>
-            <p class="legal-date">Дата публикации: 20 июня 2026 г.</p>
+            </div>
+            <p class="legal-date" data-legal="date">Дата публикации: 20 июня 2026 г.</p>
         </article>
     </main>
+    <script>
+        fetch('/api/content', { cache: 'no-store' })
+            .then(response => response.ok ? response.json() : null)
+            .then(content => {
+                const legal = content?.texts?.legal;
+                if (!legal) return;
+                setLegalText('kicker', legal.kicker);
+                setLegalText('title', legal.title);
+                setLegalText('subtitle', legal.subtitle);
+                setLegalText('date', legal.date);
+                renderLegalBody(legal.body);
+            })
+            .catch(() => {});
+
+        function setLegalText(key, value) {
+            const node = document.querySelector(`[data-legal="${key}"]`);
+            if (node && value) node.textContent = value;
+        }
+
+        function renderLegalBody(value) {
+            const root = document.querySelector('[data-legal="body"]');
+            if (!root || !value) return;
+            root.textContent = '';
+            let list = null;
+            String(value).split(/\r?\n/).forEach(line => {
+                const text = line.trim();
+                if (!text) {
+                    list = null;
+                    return;
+                }
+                if (text.startsWith('## ')) {
+                    list = null;
+                    const h2 = document.createElement('h2');
+                    h2.textContent = text.slice(3);
+                    root.append(h2);
+                    return;
+                }
+                if (text.startsWith('- ')) {
+                    if (!list) {
+                        list = document.createElement('ul');
+                        root.append(list);
+                    }
+                    const item = document.createElement('li');
+                    item.textContent = text.slice(2);
+                    list.append(item);
+                    return;
+                }
+                list = null;
+                const p = document.createElement('p');
+                p.textContent = text;
+                root.append(p);
+            });
+        }
+    </script>
 </body>
 </html>
