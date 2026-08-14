@@ -148,12 +148,9 @@
                     <field-area path="seo.description" label="Описание страницы для поисковиков"></field-area>
                     <field-input path="seo.canonical" label="Каноническая ссылка страницы"></field-input>
                     <field-input path="seo.robots" label="Индексация robots, обычно: index, follow"></field-input>
-                    <field-input path="seo.ogTitle" label="Название при вставке в VK / TG / Facebook"></field-input>
-                    <field-area path="seo.ogDescription" label="Описание при вставке в VK / TG / Facebook"></field-area>
-                    <field-input path="seo.ogImage" label="Картинка при вставке в VK / TG / Facebook"></field-input>
-                    <field-input path="seo.twitterTitle" label="Название при вставке в X / Twitter"></field-input>
-                    <field-area path="seo.twitterDescription" label="Описание при вставке в X / Twitter"></field-area>
-                    <field-input path="seo.twitterImage" label="Картинка при вставке в X / Twitter"></field-input>
+                    <field-input path="seo.ogTitle" label="Название при вставке в VK / TG"></field-input>
+                    <field-area path="seo.ogDescription" label="Описание при вставке в VK / TG"></field-area>
+                    <field-input path="seo.ogImage" label="Картинка при вставке в VK / TG"></field-input>
                 </div>
             </section>
 
@@ -317,6 +314,7 @@ Email: strikeexpo@yandex.ru`
         async function save() {
             setStatus('Сохраняю...');
             collectFields();
+            syncHiddenSeoFields();
             const response = await fetch(`${base}/api/content`, {
                 method: 'PUT',
                 headers: { 'content-type': 'application/json' },
@@ -325,6 +323,13 @@ Email: strikeexpo@yandex.ru`
             if (!response.ok) return setStatus('Ошибка сохранения');
             content = (await response.json()).content;
             setStatus('Сохранено');
+        }
+
+        function syncHiddenSeoFields() {
+            content.seo ||= {};
+            content.seo.twitterTitle = content.seo.ogTitle || content.seo.title || '';
+            content.seo.twitterDescription = content.seo.ogDescription || content.seo.description || '';
+            content.seo.twitterImage = content.seo.ogImage || '';
         }
 
         function render() {
