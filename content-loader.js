@@ -18,6 +18,7 @@ function applyContent(content) {
   applyExhibitors(texts.exhibitors || {});
   applyRoute(texts.route || {});
   renderParticipants(participants);
+  renderSchemaParticipants(participants);
 }
 
 function applyHero(hero) {
@@ -68,12 +69,26 @@ function applyLocation(location) {
   setText('[data-content="locationP2"]', location.paragraphs?.[1]);
   setText('[data-content="locationAddress"]', location.address);
   setText('[data-content="schemaTitle"]', location.schemaTitle);
+  setImage('[data-content="schemaImage"]', location.schemaImage);
   document.querySelectorAll('[data-location-stat]').forEach((node, index) => {
     const item = location.stats?.[index];
     if (!item) return;
     setChildText(node, 'h5', item.title);
     setMultiline(node.querySelector('p'), item.text);
   });
+}
+
+function renderSchemaParticipants(participants) {
+  const list = document.querySelector('[data-content="schemaParticipants"]');
+  if (!list || !participants.length) return;
+  list.textContent = '';
+  participants
+    .filter(item => item.visible !== false && (item.stand || item.name))
+    .forEach(item => {
+      const row = el('div', 'schema-participant');
+      row.append(el('span', 'schema-stand', item.stand || 'Стенд'), el('span', 'schema-name', item.name || 'Участник'));
+      list.append(row);
+    });
 }
 
 function applyExhibitors(exhibitors) {
@@ -116,6 +131,11 @@ function setText(selector, value) {
 function setChildText(parent, selector, value) {
   const node = parent?.querySelector(selector);
   if (node && value !== undefined) node.textContent = value;
+}
+
+function setImage(selector, value) {
+  const node = document.querySelector(selector);
+  if (node && value) node.src = value;
 }
 
 function setMultiline(node, value) {

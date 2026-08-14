@@ -180,6 +180,8 @@
                     <field-area path="texts.location.paragraphs.1" label="Абзац 2"></field-area>
                     <field-input path="texts.location.address" label="Адрес"></field-input>
                     <field-input path="texts.location.schemaTitle" label="Заголовок схемы"></field-input>
+                    <field-input path="texts.location.schemaImage" label="Картинка схемы: путь или URL"></field-input>
+                    <div><label>Загрузить схему</label><input type="file" accept="image/png,image/jpeg,image/webp" data-schema-upload></div>
                     <field-input path="texts.route.title" label="Заголовок карты"></field-input>
                     <field-area path="texts.route.description" label="Текст карты"></field-area>
                 </div>
@@ -298,10 +300,17 @@ Email: strikeexpo@yandex.ru`
         }
 
         function render() {
+            ensureLocation();
             ensureLegal();
             bindFields();
             renderFeatures();
             renderParticipants();
+        }
+
+        function ensureLocation() {
+            content.texts ||= {};
+            content.texts.location ||= {};
+            content.texts.location.schemaImage ||= 'img/floorplan-schema-zala.webp';
         }
 
         function ensureLegal() {
@@ -389,21 +398,35 @@ Email: strikeexpo@yandex.ru`
         });
 
         document.addEventListener('change', async event => {
+            if (event.target.dataset.schemaUpload !== undefined && event.target.files?.[0]) {
+                setStatus('Загружаю схему...');
+                content.texts.location.schemaImage = await uploadImage(event.target.files[0], 'Не удалось загрузить схему');
+                bindFields();
+                return setStatus('Схема загружена, нажми Сохранить');
+            }
+
             const index = event.target.dataset.upload;
             if (index === undefined || !event.target.files?.[0]) return;
             const file = event.target.files[0];
             setStatus('Загружаю логотип...');
+            content.participants[Number(index)].logo = await uploadImage(file, 'Не удалось загрузить логотип');
+            setStatus('Логотип загружен, нажми Сохранить');
+            renderParticipants();
+        });
+
+        async function uploadImage(file, errorMessage) {
             const dataUrl = await fileToDataUrl(file);
             const response = await fetch(`${base}/api/upload`, {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({ filename: file.name, dataUrl })
             });
-            if (!response.ok) return setStatus('Не удалось загрузить логотип');
-            content.participants[Number(index)].logo = (await response.json()).path;
-            setStatus('Логотип загружен, нажми Сохранить');
-            renderParticipants();
-        });
+            if (!response.ok) {
+                setStatus(errorMessage);
+                throw new Error(errorMessage);
+            }
+            return (await response.json()).path;
+        }
 
         function collectFields() {
             document.querySelectorAll('[path]').forEach(node => set(node.getAttribute('path'), fieldControl(node).value));

@@ -121,7 +121,7 @@ async function saveContent(req, res) {
 }
 
 async function saveUpload(req, res) {
-  const { filename, dataUrl } = await readJson(req, 4 * 1024 * 1024);
+  const { filename, dataUrl } = await readJson(req, 12 * 1024 * 1024);
   const match = /^data:(image\/(?:png|jpeg|webp));base64,([a-zA-Z0-9+/=]+)$/.exec(dataUrl || '');
   if (!match) return text(res, 400, 'Only png, jpg and webp images are allowed');
 
@@ -130,7 +130,7 @@ async function saveUpload(req, res) {
   const safe = base.toLowerCase().replace(/[^a-z0-9а-яё_-]+/giu, '-').replace(/^-+|-+$/g, '').slice(0, 64) || 'logo';
   const name = `${Date.now()}-${safe}${ext}`;
   const buffer = Buffer.from(match[2], 'base64');
-  if (buffer.length > 3 * 1024 * 1024) return text(res, 413, 'Image is too large');
+  if (buffer.length > 8 * 1024 * 1024) return text(res, 413, 'Image is too large');
 
   await writeFile(path.join(uploadsDir, name), buffer);
   json(res, { ok: true, path: `/uploads/${name}` });
