@@ -112,10 +112,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-goal]').forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.ym) {
+        link.addEventListener('click', event => {
+            if (!window.ym || !link.dataset.goal) return;
+
+            const opensNewTab = link.target && link.target.toLowerCase() !== '_self';
+            if (opensNewTab || event.defaultPrevented) {
                 ym(111553845, 'reachGoal', link.dataset.goal);
+                return;
             }
+
+            event.preventDefault();
+            let opened = false;
+            const go = () => {
+                if (opened) return;
+                opened = true;
+                window.location.href = link.href;
+            };
+
+            ym(111553845, 'reachGoal', link.dataset.goal, {}, go);
+            setTimeout(go, 500);
         });
     });
 
