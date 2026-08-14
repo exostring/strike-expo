@@ -9,7 +9,8 @@
 })();
 
 function applyContent(content) {
-  const { texts = {}, features = [], participants = [] } = content || {};
+  const { seo = {}, texts = {}, features = [], participants = [] } = content || {};
+  applySeo(seo);
   applyHero(texts.hero || {});
   applyAbout(texts.about || {});
   setText('[data-content="featuresTitle"]', texts.featuresTitle);
@@ -19,6 +20,20 @@ function applyContent(content) {
   applyRoute(texts.route || {});
   renderParticipants(participants);
   renderSchemaParticipants(participants);
+}
+
+function applySeo(seo) {
+  if (seo.title) document.title = seo.title;
+  setMeta('name', 'description', seo.description);
+  setMeta('name', 'robots', seo.robots);
+  setMeta('property', 'og:title', seo.ogTitle || seo.title);
+  setMeta('property', 'og:description', seo.ogDescription || seo.description);
+  setMeta('property', 'og:url', seo.canonical);
+  setMeta('property', 'og:image', seo.ogImage || seo.twitterImage);
+  setMeta('name', 'twitter:title', seo.twitterTitle || seo.ogTitle || seo.title);
+  setMeta('name', 'twitter:description', seo.twitterDescription || seo.ogDescription || seo.description);
+  setMeta('name', 'twitter:image', seo.twitterImage || seo.ogImage);
+  setCanonical(seo.canonical);
 }
 
 function applyHero(hero) {
@@ -178,6 +193,28 @@ function setChildText(parent, selector, value) {
 function setImage(selector, value) {
   const node = document.querySelector(selector);
   if (node && value) node.src = value;
+}
+
+function setMeta(attr, key, value) {
+  if (!value) return;
+  let node = document.querySelector(`meta[${attr}="${key}"]`);
+  if (!node) {
+    node = document.createElement('meta');
+    node.setAttribute(attr, key);
+    document.head.append(node);
+  }
+  node.setAttribute('content', value);
+}
+
+function setCanonical(value) {
+  if (!value) return;
+  let node = document.querySelector('link[rel="canonical"]');
+  if (!node) {
+    node = document.createElement('link');
+    node.rel = 'canonical';
+    document.head.append(node);
+  }
+  node.href = value;
 }
 
 function setMultiline(node, value) {

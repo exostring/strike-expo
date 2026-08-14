@@ -182,7 +182,79 @@ async function readJson(req, limit) {
 
 function sendPublic(req, res, pathname) {
   const clean = pathname === '/' ? '/index.html' : pathname;
+  if (clean === '/index.html') return sendIndex(res);
   return sendFile(res, path.join(root, clean.replace(/^\/+/, '')), root);
+}
+
+async function sendIndex(res) {
+  let html = await readFile(path.join(root, 'index.html'), 'utf8');
+  try {
+    html = injectSeo(html, (await readContent()).seo || {});
+  } catch {
+    // Keep static SEO fallback if saved content is unavailable.
+  }
+  res.writeHead(200, { 'content-type': mime['.html'] });
+  res.end(html);
+}
+
+function injectSeo(html, seo) {
+  if (!seo || typeof seo !== 'object') return html;
+  let next = html;
+  if (seo.title) next = next.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(seo.title)}</title>`);
+  next = setMeta(next, 'name', 'description', seo.description);
+  next = setMeta(next, 'name', 'robots', seo.robots);
+  next = setMeta(next, 'property', 'og:title', seo.ogTitle || seo.title);
+  next = setMeta(next, 'property', 'og:description', seo.ogDescription || seo.description);
+  next = setMeta(next, 'property', 'og:url', seo.canonical);
+  next = setMeta(next, 'property', 'og:image', seo.ogImage || seo.twitterImage);
+  next = setMeta(next, 'name', 'twitter:title', seo.twitterTitle || seo.ogTitle || seo.title);
+  next = setMeta(next, 'name', 'twitter:description', seo.twitterDescription || seo.ogDescription || seo.description);
+  next = setMeta(next, 'name', 'twitter:image', seo.twitterImage || seo.ogImage);
+  next = setCanonical(next, seo.canonical);
+  return updateJsonLd(next, seo);
+}
+
+function setMeta(html, attr, key, value) {
+  if (!value) return html;
+  const escaped = escapeAttr(value);
+  const pattern = new RegExp(`<meta\\s+${attr}="${escapeRegExp(key)}"\\s+content="[^"]*"\\s*>`, 'i');
+  const tag = `<meta ${attr}="${key}" content="${escaped}">`;
+  return pattern.test(html) ? html.replace(pattern, tag) : html.replace('</head>', `    ${tag}\n</head>`);
+}
+
+function setCanonical(html, value) {
+  if (!value) return html;
+  const tag = `<link rel="canonical" href="${escapeAttr(value)}">`;
+  return /<link\s+rel="canonical"\s+href="[^"]*"\s*>/i.test(html)
+    ? html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*>/i, tag)
+    : html.replace('</head>', `    ${tag}\n</head>`);
+}
+
+function updateJsonLd(html, seo) {
+  return html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i, (match, body) => {
+    try {
+      const data = JSON.parse(body);
+      if (seo.ogTitle || seo.title) data.name = seo.ogTitle || seo.title;
+      if (seo.description) data.description = seo.description;
+      if (seo.canonical) data.url = seo.canonical;
+      if (seo.ogImage || seo.twitterImage) data.image = [seo.ogImage || seo.twitterImage];
+      return `<script type="application/ld+json">\n${JSON.stringify(data, null, 2)}\n    </script>`;
+    } catch {
+      return match;
+    }
+  });
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[char]));
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replace(/"/g, '&quot;');
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 async function sendFile(res, file, base) {

@@ -142,6 +142,22 @@
 
         <main>
             <section>
+                <h2>SEO</h2>
+                <div class="grid">
+                    <field-input path="seo.title" label="Title"></field-input>
+                    <field-area path="seo.description" label="Description"></field-area>
+                    <field-input path="seo.canonical" label="Canonical URL"></field-input>
+                    <field-input path="seo.robots" label="Robots"></field-input>
+                    <field-input path="seo.ogTitle" label="OG title"></field-input>
+                    <field-area path="seo.ogDescription" label="OG description"></field-area>
+                    <field-input path="seo.ogImage" label="OG image URL"></field-input>
+                    <field-input path="seo.twitterTitle" label="Twitter title"></field-input>
+                    <field-area path="seo.twitterDescription" label="Twitter description"></field-area>
+                    <field-input path="seo.twitterImage" label="Twitter image URL"></field-input>
+                </div>
+            </section>
+
+            <section>
                 <h2>Первый экран</h2>
                 <div class="grid">
                     <field-input path="texts.hero.kicker" label="Верхняя метка"></field-input>
@@ -213,6 +229,18 @@
     <script>
         let content = null;
         const base = location.pathname.replace(/\/$/, '');
+        const defaultSeo = {
+            title: 'Strike Expo 2026 — выставка тактического снаряжения в Екатеринбурге',
+            description: 'Страйк ЭКСПО 2026 в Екатеринбурге: выставка военного и тактического снаряжения, страйкбола, EDC и активного отдыха на Урале, 7-8 ноября 2026 года.',
+            canonical: 'https://strike-expo.ru/',
+            robots: 'index, follow',
+            ogTitle: 'Strike Expo 2026',
+            ogDescription: 'Главное событие о тактическом снаряжении, страйкболе и EDC на Урале. Екатеринбург, 7-8 ноября 2026.',
+            ogImage: 'https://strike-expo.ru/img/hero.webp',
+            twitterTitle: 'Strike Expo 2026',
+            twitterDescription: 'Главное событие о тактическом снаряжении, страйкболе и EDC на Урале. Екатеринбург, 7-8 ноября 2026.',
+            twitterImage: 'https://strike-expo.ru/img/hero.webp'
+        };
         const defaultLegal = {
             kicker: 'Strike Expo',
             title: 'Публичная оферта',
@@ -300,11 +328,16 @@ Email: strikeexpo@yandex.ru`
         }
 
         function render() {
+            ensureSeo();
             ensureLocation();
             ensureLegal();
             bindFields();
             renderFeatures();
             renderParticipants();
+        }
+
+        function ensureSeo() {
+            content.seo = { ...defaultSeo, ...(content.seo || {}) };
         }
 
         function ensureLocation() {

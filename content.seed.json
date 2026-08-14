@@ -1,5 +1,17 @@
 {
   "updatedAt": "2026-08-14T00:00:00.000Z",
+  "seo": {
+    "title": "Strike Expo 2026 — выставка тактического снаряжения в Екатеринбурге",
+    "description": "Страйк ЭКСПО 2026 в Екатеринбурге: выставка военного и тактического снаряжения, страйкбола, EDC и активного отдыха на Урале, 7-8 ноября 2026 года.",
+    "canonical": "https://strike-expo.ru/",
+    "robots": "index, follow",
+    "ogTitle": "Strike Expo 2026",
+    "ogDescription": "Главное событие о тактическом снаряжении, страйкболе и EDC на Урале. Екатеринбург, 7-8 ноября 2026.",
+    "ogImage": "https://strike-expo.ru/img/hero.webp",
+    "twitterTitle": "Strike Expo 2026",
+    "twitterDescription": "Главное событие о тактическом снаряжении, страйкболе и EDC на Урале. Екатеринбург, 7-8 ноября 2026.",
+    "twitterImage": "https://strike-expo.ru/img/hero.webp"
+  },
   "texts": {
     "hero": {
       "kicker": "NOV.07-08 // 2026 // URAL",
