@@ -118,9 +118,48 @@ function renderParticipants(participants) {
     body.append(el('h4', '', item.name));
     if (item.stand) body.append(el('span', 'stand-number', item.stand));
     body.append(el('p', '', item.description));
+    const links = participantLinks(item.links);
+    if (links) body.append(links);
     card.append(logoWrap, body);
     grid.append(card);
   });
+}
+
+function participantLinks(links = {}) {
+  const items = [
+    ['website', 'Сайт', links.website],
+    ['vk', 'ВК', links.vk],
+    ['max', 'MAX', links.max],
+    ['telegram', 'Telegram', links.telegram]
+  ].filter(([, , href]) => href);
+  if (!items.length) return null;
+
+  const box = el('div', 'participant-socials');
+  items.forEach(([type, label, href]) => {
+    const link = el('a', `participant-social-link participant-social-link--${type}`);
+    link.href = normalizeUrl(href);
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.ariaLabel = label;
+    link.title = label;
+    link.innerHTML = socialIcon(type, label);
+    box.append(link);
+  });
+  return box;
+}
+
+function socialIcon(type, label) {
+  if (type === 'website') {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.93 9h-3.02a15.7 15.7 0 0 0-1.07-5.13A8.03 8.03 0 0 1 18.93 11ZM12 4.04c.83 1.2 1.7 3.31 1.9 6.96h-3.8c.2-3.65 1.07-5.76 1.9-6.96ZM4.07 13h3.02c.14 1.97.53 3.73 1.07 5.13A8.03 8.03 0 0 1 4.07 13Zm3.02-2H4.07a8.03 8.03 0 0 1 4.09-5.13A15.7 15.7 0 0 0 7.09 11ZM12 19.96c-.83-1.2-1.7-3.31-1.9-6.96h3.8c-.2 3.65-1.07 5.76-1.9 6.96Zm3.84-1.83c.54-1.4.93-3.16 1.07-5.13h3.02a8.03 8.03 0 0 1-4.09 5.13Z"/></svg>';
+  }
+  const slug = type === 'telegram' ? 'telegram' : type;
+  return `<img src="https://cdn.simpleicons.org/${slug}/dcb96a" alt="" loading="lazy"><span>${label}</span>`;
+}
+
+function normalizeUrl(value) {
+  const url = String(value || '').trim();
+  if (!url) return '#';
+  return /^[a-z][a-z0-9+.-]*:/i.test(url) ? url : `https://${url}`;
 }
 
 function setText(selector, value) {

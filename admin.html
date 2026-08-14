@@ -258,7 +258,7 @@ Email: strikeexpo@yandex.ru`
         });
         document.getElementById('saveBtn').addEventListener('click', save);
         document.getElementById('addParticipant').addEventListener('click', () => {
-            content.participants.push({ name: 'Новый участник', stand: '', description: '', logo: 'img/logo.png', visible: true });
+            content.participants.push({ name: 'Новый участник', stand: '', description: '', logo: 'img/logo.png', visible: true, links: {} });
             renderParticipants();
         });
 
@@ -347,6 +347,7 @@ Email: strikeexpo@yandex.ru`
             const box = document.getElementById('participants');
             box.textContent = '';
             content.participants.forEach((item, index) => {
+                item.links ||= {};
                 const card = div('card');
                 card.innerHTML = `
                     <div class="participant-head">
@@ -361,6 +362,10 @@ Email: strikeexpo@yandex.ru`
                         <div><label>Стенд</label><input data-participant="${index}" data-key="stand"></div>
                         <div><label>Логотип: путь или URL</label><input data-participant="${index}" data-key="logo"></div>
                         <div><label>Загрузить логотип</label><input type="file" accept="image/png,image/jpeg,image/webp" data-upload="${index}"></div>
+                        <div><label>Сайт</label><input data-participant="${index}" data-link="website" placeholder="https://example.ru"></div>
+                        <div><label>ВК</label><input data-participant="${index}" data-link="vk" placeholder="https://vk.com/company"></div>
+                        <div><label>MAX</label><input data-participant="${index}" data-link="max" placeholder="https://max.ru/..."></div>
+                        <div><label>Телеграм</label><input data-participant="${index}" data-link="telegram" placeholder="https://t.me/company"></div>
                     </div>
                     <label>Описание</label>
                     <textarea data-participant="${index}" data-key="description"></textarea>
@@ -374,6 +379,9 @@ Email: strikeexpo@yandex.ru`
                 ['name', 'stand', 'logo', 'description'].forEach(key => {
                     card.querySelector(`[data-key="${key}"]`).value = item[key] || '';
                 });
+                ['website', 'vk', 'max', 'telegram'].forEach(key => {
+                    card.querySelector(`[data-link="${key}"]`).value = item.links[key] || '';
+                });
                 box.append(card);
             });
         }
@@ -383,6 +391,11 @@ Email: strikeexpo@yandex.ru`
             const p = event.target.dataset.participant;
             if (f !== undefined) content.features[Number(f)][event.target.dataset.key] = event.target.value;
             if (p !== undefined) {
+                if (event.target.dataset.link) {
+                    content.participants[Number(p)].links ||= {};
+                    content.participants[Number(p)].links[event.target.dataset.link] = event.target.value;
+                    return;
+                }
                 const key = event.target.dataset.key;
                 content.participants[Number(p)][key] = key === 'visible' ? event.target.checked : event.target.value;
             }
