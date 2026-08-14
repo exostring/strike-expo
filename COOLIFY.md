@@ -5,14 +5,14 @@
 ## Domains
 
 ```text
-https://panel.strike-expo.ru
+https://strike-expo.ru
 ```
 
 ## Environment variables
 
 ```text
 PORT=3000
-PUBLIC_BASE_URL=https://panel.strike-expo.ru
+PUBLIC_BASE_URL=https://strike-expo.ru
 ADMIN_PATH=/control-change-this-secret-path
 ADMIN_PASSWORD=change-this-password
 SESSION_SECRET=change-this-long-random-secret
