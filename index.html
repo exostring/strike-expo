@@ -60,7 +60,7 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/111553845" style="position:absolute; left:-9999px;" alt=""></div></noscript>
 <!-- /Yandex.Metrika counter -->
 </head>
-<body>
+<body id="top">
     <div class="parallax-wrapper">
         <div class="parallax-layer">
             <div class="bg-image"></div>
@@ -71,7 +71,7 @@
 
     <header class="header">
         <div class="logo">
-            <a href="index.html" aria-label="На главную Strike Expo">
+            <a href="#top" aria-label="Наверх Strike Expo" data-scroll-top>
                 <img src="img/Логотип горизонтальный.png" alt="СТРАЙК ЭКСПО" fetchpriority="high" onerror="this.src='img/logo.png'">
             </a>
         </div>
@@ -91,7 +91,8 @@
                 <a href="#about">ВЫСТАВКА</a>
                 <a href="#schedule">РАСПИСАНИЕ</a>
                 <a href="#location">ЛОКАЦИЯ</a>
-                <a href="#exhibitors">ЭКСПОНЕНТЫ</a>
+                <a href="#exhibitors">УЧАСТНИКИ</a>
+                <a href="exhibitors.html">БРОНЬ СТЕНДА</a>
             </nav>
             <div class="social-links header-socials" aria-label="Соцсети Strike Expo">
                 <a href="https://vk.ru/strike_expo" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="VK Strike Expo">
@@ -99,6 +100,9 @@
                 </a>
                 <a href="https://t.me/strike_expo" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Telegram Strike Expo">
                     <img src="https://cdn.simpleicons.org/telegram/dcb96a" alt="" loading="lazy">
+                </a>
+                <a href="https://web.max.ru/-77898705339648" target="_blank" rel="noopener noreferrer" class="social-link social-link--max" aria-label="MAX Strike Expo">
+                    <img src="img/icons/max.svg" alt="" loading="lazy">
                 </a>
             </div>
             <a href="https://qtickets.ru/event/241757" class="btn-buy-header" data-goal="buy_ticket">КУПИТЬ БИЛЕТ</a>
@@ -136,7 +140,7 @@
                         </div>
                         <div class="info-col with-border">
                             <h3 data-content="heroVenue">ДВЦ</h3>
-                            <p data-content="heroAddress">Ул. Куйбышева 44Д/1</p>
+                            <p data-content="heroAddress">Ул. Куйбышева 44А/1</p>
                         </div>
                     </div>
                     
@@ -276,7 +280,7 @@
                         <h2 class="section-title" data-content="exhibitorsTitle">УЧАСТНИКИ ВЫСТАВКИ</h2>
                         <p class="exhibitors-desc" data-content="exhibitorsDesc">Количество мест ограничено. Заявки на застройку принимаются до 1 октября 2026 года.</p>
                     </div>
-                    <a href="https://forms.yandex.ru/u/69eb18a59029021d511d62b5/" target="_blank" rel="noopener noreferrer" class="btn-outline" data-goal="book_place">ЗАБРОНИРОВАТЬ СТЕНД</a>
+                    <a href="exhibitors.html" class="btn-outline" data-goal="book_place">ЗАБРОНИРОВАТЬ СТЕНД</a>
                 </div>
                 
                 <div class="exhibitors-grid" data-content="participantsGrid">
@@ -450,7 +454,7 @@
                         </div>
                     </article>
                 </div>
-                <div class="section-cta"><a href="https://forms.yandex.ru/u/69eb18a59029021d511d62b5/" target="_blank" rel="noopener noreferrer" class="btn-outline" data-goal="book_place">ЗАБРОНИРОВАТЬ СТЕНД</a></div>
+                <div class="section-cta"><a href="exhibitors.html" class="btn-outline" data-goal="book_place">ЗАБРОНИРОВАТЬ СТЕНД</a></div>
             </div>
         </section>
         
@@ -483,6 +487,9 @@
                     </a>
                     <a href="https://t.me/strike_expo" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Telegram Strike Expo">
                         <img src="https://cdn.simpleicons.org/telegram/dcb96a" alt="" loading="lazy">
+                    </a>
+                    <a href="https://web.max.ru/-77898705339648" target="_blank" rel="noopener noreferrer" class="social-link social-link--max" aria-label="MAX Strike Expo">
+                        <img src="img/icons/max.svg" alt="" loading="lazy">
                     </a>
                 </div>
                 <p class="privacy-row"><a href="offer.html" target="_blank" rel="noopener noreferrer" class="privacy-link">Публичная оферта</a></p>

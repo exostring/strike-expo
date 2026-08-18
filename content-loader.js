@@ -10,6 +10,11 @@
 
 function applyContent(content) {
   const { seo = {}, texts = {}, features = [], participants = [] } = content || {};
+  if (document.body.classList.contains('exhibitor-page')) {
+    renderParticipants(participants);
+    renderSchemaParticipants(participants);
+    return;
+  }
   applySeo(seo);
   applyHero(texts.hero || {});
   applyAbout(texts.about || {});
@@ -125,7 +130,7 @@ function renderParticipants(participants) {
     const logoWrap = el('div', 'exhibitor-logo-wrap');
     const img = el('img', 'company-logo');
     img.src = item.logo || 'img/logo.png';
-    img.loading = 'lazy';
+    img.loading = 'eager';
     img.alt = item.name || 'Участник выставки';
     logoWrap.append(img);
 

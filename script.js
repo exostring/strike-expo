@@ -171,3 +171,119 @@ document.addEventListener('DOMContentLoaded', () => {
         loadVideo();
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('lead-modal');
+    const form = document.getElementById('lead-form');
+    if (!modal || !form) return;
+
+    const privacyModal = document.getElementById('privacy-modal');
+    const firstInput = form.querySelector('input[name="name"]');
+    const status = form.querySelector('.lead-form-status');
+
+    const openModal = event => {
+        event.preventDefault();
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        if (window.ym) ym(111553845, 'reachGoal', 'book_place');
+        setTimeout(() => firstInput?.focus(), 50);
+    };
+
+    const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        if (!privacyModal?.classList.contains('is-open')) {
+            document.body.classList.remove('modal-open');
+        }
+    };
+
+    const openPrivacyModal = event => {
+        event.preventDefault();
+        privacyModal?.classList.add('is-open');
+        privacyModal?.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+    };
+
+    const closePrivacyModal = () => {
+        privacyModal?.classList.remove('is-open');
+        privacyModal?.setAttribute('aria-hidden', 'true');
+        if (!modal.classList.contains('is-open')) {
+            document.body.classList.remove('modal-open');
+        }
+    };
+
+    document.querySelectorAll('[data-open-lead]').forEach(button => {
+        button.addEventListener('click', openModal);
+    });
+
+    modal.querySelectorAll('[data-close-lead]').forEach(button => {
+        button.addEventListener('click', closeModal);
+    });
+
+    document.querySelectorAll('[data-open-privacy]').forEach(button => {
+        button.addEventListener('click', openPrivacyModal);
+    });
+
+    privacyModal?.querySelectorAll('[data-close-privacy]').forEach(button => {
+        button.addEventListener('click', closePrivacyModal);
+    });
+
+    document.addEventListener('keydown', event => {
+        if (event.key !== 'Escape') return;
+        if (privacyModal?.classList.contains('is-open')) {
+            closePrivacyModal();
+            return;
+        }
+        if (modal.classList.contains('is-open')) closeModal();
+    });
+
+    form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const button = form.querySelector('button[type="submit"]');
+        const formData = new FormData(form);
+        const payload = {
+            name: formData.get('name'),
+            phone: formData.get('phone'),
+            contactMethod: formData.get('contactMethod') || 'call',
+            privacyConsent: formData.get('privacyConsent') === 'on',
+            page: window.location.href
+        };
+
+        button.disabled = true;
+        if (status) status.textContent = 'Отправляем...';
+
+        try {
+            const response = await fetch('/api/exhibitor-lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok) throw new Error('Request failed');
+            form.reset();
+            form.contactMethod.value = 'call';
+            if (status) status.textContent = 'Заявка отправлена. Мы свяжемся с вами.';
+            if (window.ym) ym(111553845, 'reachGoal', 'exhibitor_lead_submit');
+        } catch {
+            if (status) status.textContent = 'Не получилось отправить. Позвоните: +7 (905) 809-05-17.';
+        } finally {
+            button.disabled = false;
+        }
+    });
+});
+
+document.addEventListener('click', event => {
+    const link = event.target.closest?.('[data-scroll-top]');
+    if (!link) return;
+
+    event.preventDefault();
+    const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo(0, 0);
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    requestAnimationFrame(() => {
+        document.documentElement.style.scrollBehavior = previousScrollBehavior;
+    });
+});

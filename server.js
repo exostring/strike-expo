@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { createReadStream } from 'node:fs';
-import { mkdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
+import { appendFile, mkdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,6 +14,7 @@ const seedPath = path.join(root, 'content.seed.json');
 const adminPath = normalizeAdminPath(process.env.ADMIN_PATH || '/control-7f3a-strike');
 const adminPassword = process.env.ADMIN_PASSWORD || '';
 const sessionSecret = process.env.SESSION_SECRET || randomBytes(32).toString('hex');
+const googleSheetsWebhook = process.env.GOOGLE_SHEETS_WEBHOOK || '';
 const isProduction = process.env.NODE_ENV === 'production';
 
 const mime = {
@@ -45,6 +46,10 @@ createServer(async (req, res) => {
 
     if (pathname === '/api/content' && req.method === 'GET') {
       return json(res, await readContent());
+    }
+
+    if (pathname === '/api/exhibitor-lead' && req.method === 'POST') {
+      return saveExhibitorLead(req, res);
     }
 
     if (pathname.startsWith('/uploads/')) {
@@ -134,6 +139,49 @@ async function saveUpload(req, res) {
 
   await writeFile(path.join(uploadsDir, name), buffer);
   json(res, { ok: true, path: `/uploads/${name}` });
+}
+
+async function saveExhibitorLead(req, res) {
+  const data = await readJson(req, 32 * 1024);
+  const lead = {
+    createdAt: new Date().toISOString(),
+    name: cleanField(data.name, 80),
+    phone: cleanField(data.phone, 40),
+    contactMethod: cleanContactMethod(data.contactMethod),
+    privacyConsent: data.privacyConsent === true,
+    page: cleanField(data.page, 160),
+    userAgent: cleanField(req.headers['user-agent'], 220)
+  };
+
+  if (!lead.name || !lead.phone || !lead.privacyConsent) {
+    return text(res, 400, 'Name, phone and privacy consent are required');
+  }
+
+  if (googleSheetsWebhook) {
+    await sendLeadToGoogleSheets(lead);
+  } else {
+    await appendFile(path.join(dataDir, 'exhibitor-leads.jsonl'), `${JSON.stringify(lead)}\n`, 'utf8');
+  }
+  json(res, { ok: true });
+}
+
+async function sendLeadToGoogleSheets(lead) {
+  const response = await fetch(googleSheetsWebhook, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(lead)
+  });
+  if (!response.ok) {
+    throw new Error(`Google Sheets webhook failed: ${response.status}`);
+  }
+}
+
+function cleanField(value, maxLength) {
+  return String(value || '').replace(/\s+/g, ' ').trim().slice(0, maxLength);
+}
+
+function cleanContactMethod(value) {
+  return ['call', 'telegram', 'max', 'whatsapp'].includes(value) ? value : 'call';
 }
 
 async function handleLogin(req, res) {
