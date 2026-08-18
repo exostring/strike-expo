@@ -179,10 +179,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const privacyModal = document.getElementById('privacy-modal');
     const firstInput = form.querySelector('input[name="name"]');
+    const phoneInput = form.querySelector('input[name="phone"]');
+    const consentInput = form.querySelector('input[name="privacyConsent"]');
     const status = form.querySelector('.lead-form-status');
+    const success = modal.querySelector('.lead-success');
 
     const openModal = event => {
         event.preventDefault();
+        form.hidden = false;
+        if (success) success.hidden = true;
+        if (status) status.textContent = '';
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
@@ -238,15 +244,122 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal.classList.contains('is-open')) closeModal();
     });
 
+    function formatPhone(digits) {
+        if (!digits) return '';
+        let out = '+7 (';
+        if (digits.length > 0) out += digits.slice(0, 3);
+        if (digits.length >= 3) out += ') ';
+        if (digits.length > 3) out += digits.slice(3, 6);
+        if (digits.length >= 6) out += '-';
+        if (digits.length > 6) out += digits.slice(6, 8);
+        if (digits.length >= 8) out += '-';
+        if (digits.length > 8) out += digits.slice(8, 10);
+        return out;
+    }
+
+    function cleanPhoneDigits(value) {
+        let digits = String(value || '').replace(/\D/g, '');
+        if (digits[0] === '7' || digits[0] === '8') digits = digits.slice(1);
+        return digits.slice(0, 10);
+    }
+
+    function setPhone(input, digits) {
+        input.dataset.digits = digits.slice(0, 10);
+        input.value = formatPhone(input.dataset.digits);
+        input.setSelectionRange(input.value.length, input.value.length);
+    }
+
+    function shakePhone(input) {
+        input.classList.remove('input-shake');
+        void input.offsetWidth;
+        input.classList.add('input-shake');
+    }
+
+    function initPhoneMask(input) {
+        if (!input || input.dataset.maskReady) return;
+        input.dataset.maskReady = '1';
+        let maskTimer = null;
+        const schedule = () => {
+            clearTimeout(maskTimer);
+            maskTimer = setTimeout(() => normalizePhone(input), 420);
+        };
+
+        input.addEventListener('input', schedule);
+        input.addEventListener('blur', () => {
+            clearTimeout(maskTimer);
+            normalizePhone(input);
+        });
+    }
+
+    function normalizePhone(input) {
+        const rawDigits = String(input.value || '').replace(/\D/g, '');
+        if (!rawDigits) {
+            input.dataset.digits = '';
+            input.value = '';
+            return;
+        }
+
+        if (rawDigits === '7' || rawDigits === '8') {
+            input.dataset.digits = '';
+            input.value = '+7 (';
+            input.setSelectionRange(input.value.length, input.value.length);
+            return;
+        }
+
+        const digits = cleanPhoneDigits(input.value);
+        if (digits && digits[0] !== '9') {
+            input.dataset.digits = '';
+            input.value = '';
+            shakePhone(input);
+            return;
+        }
+
+        setPhone(input, digits);
+    }
+
+    initPhoneMask(phoneInput);
+
     form.addEventListener('submit', async event => {
         event.preventDefault();
         const button = form.querySelector('button[type="submit"]');
+        normalizePhone(phoneInput);
         const formData = new FormData(form);
+        const name = String(formData.get('name') || '').trim();
+        const phoneDigits = cleanPhoneDigits(formData.get('phone'));
+
+        if (status) status.textContent = '';
+
+        if (name.length < 2) {
+            if (status) status.textContent = 'Введите имя, чтобы мы понимали, к кому обращаться.';
+            firstInput?.focus();
+            return;
+        }
+
+        if (phoneDigits.length < 10) {
+            if (status) status.textContent = 'Введите телефон полностью: +7 (999) 999-99-99.';
+            shakePhone(phoneInput);
+            phoneInput?.focus();
+            return;
+        }
+
+        if (phoneDigits[0] !== '9') {
+            if (status) status.textContent = 'Введите российский мобильный номер, начиная с 9.';
+            shakePhone(phoneInput);
+            phoneInput?.focus();
+            return;
+        }
+
+        if (!consentInput?.checked) {
+            if (status) status.textContent = 'Нужно согласие на обработку персональных данных.';
+            consentInput?.focus();
+            return;
+        }
+
         const payload = {
-            name: formData.get('name'),
-            phone: formData.get('phone'),
+            name,
+            phone: formatPhone(phoneDigits),
             contactMethod: formData.get('contactMethod') || 'call',
-            privacyConsent: formData.get('privacyConsent') === 'on',
+            privacyConsent: true,
             page: window.location.href
         };
 
@@ -262,7 +375,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error('Request failed');
             form.reset();
             form.contactMethod.value = 'call';
-            if (status) status.textContent = 'Заявка отправлена. Мы свяжемся с вами.';
+            setPhone(phoneInput, '');
+            form.hidden = true;
+            if (success) success.hidden = false;
             if (window.ym) ym(111553845, 'reachGoal', 'exhibitor_lead_submit');
         } catch {
             if (status) status.textContent = 'Не получилось отправить. Позвоните: +7 (905) 809-05-17.';

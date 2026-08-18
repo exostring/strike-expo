@@ -374,14 +374,14 @@
             <button class="lead-modal-close" type="button" aria-label="Закрыть форму" data-close-lead>×</button>
             <p class="legal-kicker">Участие в выставке</p>
             <h2 id="lead-modal-title">Обсудим ваш стенд</h2>
-            <form id="lead-form" class="lead-form">
+            <form id="lead-form" class="lead-form" novalidate>
                 <label>
                     <span>Имя</span>
                     <input type="text" name="name" autocomplete="name" required>
                 </label>
                 <label>
                     <span>Телефон</span>
-                    <input type="tel" name="phone" autocomplete="tel" required>
+                    <input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required>
                 </label>
                 <fieldset>
                     <legend>Как связаться</legend>
@@ -399,6 +399,11 @@
                 <button class="btn-buy-large" type="submit">ОБСУДИТЬ СТЕНД</button>
                 <p class="lead-form-status" role="status" aria-live="polite"></p>
             </form>
+            <div class="lead-success" hidden>
+                <h3>Заявку получили</h3>
+                <p>Спасибо. Мы скоро свяжемся с вами, чтобы обсудить участие в Strike Expo и подобрать подходящий формат стенда.</p>
+                <button class="btn-outline" type="button" data-close-lead>Закрыть</button>
+            </div>
         </div>
     </div>
 
