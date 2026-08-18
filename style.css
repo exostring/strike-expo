@@ -1859,6 +1859,20 @@ body {
     min-height: 72px;
 }
 
+.price-meta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    margin-top: 16px;
+    padding: 7px 10px;
+    border: 1px solid rgba(220,185,106,0.22);
+    background: rgba(220,185,106,0.09);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
 .price-card ul {
     list-style: none;
     margin-top: 22px;
@@ -1872,14 +1886,87 @@ body {
     border-top: 1px solid rgba(255,255,255,0.08);
 }
 
-.included-panel {
+.included-panel,
+.tariff-note {
     margin-top: 22px;
     padding: 28px 32px;
 }
 
-.included-panel h3 {
+.included-panel h3,
+.stand-build-content h3 {
     font-size: 26px;
     margin-bottom: 12px;
+}
+
+.tariff-note p {
+    color: rgba(255,255,255,0.82);
+    font-size: 17px;
+    line-height: 1.58;
+    margin: 0;
+}
+
+.stand-build-panel {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.86fr) minmax(0, 1.14fr);
+    gap: 28px;
+    margin-top: 22px;
+    padding: 28px 32px;
+    align-items: stretch;
+}
+
+.stand-build-media {
+    display: grid;
+    grid-template-rows: minmax(150px, 0.72fr) minmax(260px, 1fr);
+    gap: 12px;
+    min-height: 100%;
+}
+
+.stand-build-media img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+}
+
+.stand-build-media img:first-child {
+    object-fit: contain;
+    padding: 18px;
+    background: rgba(238,238,238,0.94);
+}
+
+.stand-build-content p {
+    color: rgba(255,255,255,0.8);
+    font-size: 16px;
+    line-height: 1.58;
+}
+
+.stand-build-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.stand-build-columns h4 {
+    color: #fff;
+    font-size: 17px;
+    line-height: 1.25;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.stand-build-columns ul {
+    list-style: none;
+}
+
+.stand-build-columns li {
+    color: rgba(255,255,255,0.74);
+    font-size: 14px;
+    line-height: 1.45;
+    padding: 8px 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
 }
 
 .muted-note {
@@ -2236,7 +2323,8 @@ body {
     }
 
     .pricing-grid,
-    .business-grid {
+    .business-grid,
+    .stand-build-panel {
         grid-template-columns: 1fr;
     }
 }
@@ -2383,6 +2471,15 @@ body {
         min-height: 0;
     }
 
+    .stand-build-media {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: none;
+    }
+
+    .stand-build-media img {
+        min-height: 220px;
+    }
+
     .business-card h2 {
         font-size: 24px;
     }
@@ -2512,6 +2609,34 @@ body {
 
     .price-card h3 {
         font-size: 24px;
+    }
+
+    .price-meta {
+        width: 100%;
+    }
+
+    .stand-build-panel {
+        padding: 20px 16px;
+    }
+
+    .stand-build-media {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+    }
+
+    .stand-build-media img {
+        min-height: 190px;
+    }
+
+    .stand-build-columns {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .stand-build-content p,
+    .tariff-note p {
+        font-size: 14px;
+        line-height: 1.5;
     }
 
     .faq-list summary {
