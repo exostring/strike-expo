@@ -13,7 +13,7 @@ function doPost(e) {
   sheet.appendRow([
     new Date(),
     data.name || '',
-    data.phone || '',
+    normalizePhoneForSheet_(data.phone),
     contactMethodLabel_(data.contactMethod),
     data.page || '',
     data.userAgent || ''
@@ -56,7 +56,11 @@ function contactMethodLabel_(value) {
   return labels[value] || 'Звонок';
 }
 
-function testWrite_() {
+function normalizePhoneForSheet_(value) {
+  return String(value || '').replace(/^\+/, '');
+}
+
+function testWrite() {
   return doPost({
     postData: {
       contents: JSON.stringify({
