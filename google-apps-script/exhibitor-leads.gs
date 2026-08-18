@@ -1,5 +1,11 @@
 const SHEET_NAME = 'Заявки экспонентов';
 
+function doGet() {
+  return ContentService
+    .createTextOutput(JSON.stringify({ ok: true, service: 'strike-expo-leads' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
 function doPost(e) {
   const sheet = getLeadSheet_();
   const data = JSON.parse(e.postData.contents || '{}');
@@ -48,4 +54,18 @@ function contactMethodLabel_(value) {
     whatsapp: 'WhatsApp'
   };
   return labels[value] || 'Звонок';
+}
+
+function testWrite_() {
+  return doPost({
+    postData: {
+      contents: JSON.stringify({
+        name: 'Тест Apps Script',
+        phone: '+7 (999) 000-00-00',
+        contactMethod: 'call',
+        page: 'manual test',
+        userAgent: 'Apps Script'
+      })
+    }
+  });
 }
