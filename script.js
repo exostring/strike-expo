@@ -183,9 +183,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const consentInput = form.querySelector('input[name="privacyConsent"]');
     const status = form.querySelector('.lead-form-status');
     const success = modal.querySelector('.lead-success');
+    const dialog = modal.querySelector('.lead-modal-dialog');
+    const introNodes = modal.querySelectorAll('[data-lead-intro]');
 
     const openModal = event => {
         event.preventDefault();
+        dialog?.setAttribute('aria-labelledby', 'lead-modal-title');
+        introNodes.forEach(node => {
+            node.hidden = false;
+        });
         form.hidden = false;
         if (success) success.hidden = true;
         if (status) status.textContent = '';
@@ -376,8 +382,13 @@ document.addEventListener('DOMContentLoaded', () => {
             form.reset();
             form.contactMethod.value = 'call';
             setPhone(phoneInput, '');
+            if (status) status.textContent = '';
             form.hidden = true;
+            introNodes.forEach(node => {
+                node.hidden = true;
+            });
             if (success) success.hidden = false;
+            dialog?.setAttribute('aria-labelledby', 'lead-success-title');
             if (window.ym) ym(111553845, 'reachGoal', 'exhibitor_lead_submit');
         } catch {
             if (status) status.textContent = 'Не получилось отправить. Позвоните: +7 (905) 809-05-17.';

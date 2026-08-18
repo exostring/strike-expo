@@ -644,6 +644,12 @@ body {
     gap: 50px;
     align-items: center;
 }
+
+.exhibitor-about {
+    padding-top: 56px;
+    padding-bottom: 56px;
+}
+
 .about-text { flex: 1; }
 .about-text p {
     font-size: 18px;
@@ -2050,6 +2056,10 @@ body {
     gap: 18px;
 }
 
+.lead-form[hidden] {
+    display: none;
+}
+
 .lead-form label,
 .lead-form fieldset {
     display: grid;
@@ -2185,6 +2195,7 @@ body {
 .lead-success {
     display: grid;
     gap: 16px;
+    padding: 12px 0 4px;
 }
 
 .lead-success[hidden] {
@@ -2196,7 +2207,6 @@ body {
     font-size: 28px;
     line-height: 1.1;
     margin: 0;
-    text-transform: uppercase;
 }
 
 .lead-success p {
