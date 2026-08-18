@@ -1828,6 +1828,8 @@ body {
 }
 
 .price-card {
+    display: flex;
+    flex-direction: column;
     padding: 30px;
 }
 
@@ -1876,6 +1878,7 @@ body {
 .price-card ul {
     list-style: none;
     margin-top: 22px;
+    margin-bottom: 22px;
 }
 
 .price-card li {
@@ -1884,6 +1887,20 @@ body {
     line-height: 1.45;
     padding: 10px 0;
     border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.price-card-cta {
+    width: 100%;
+    margin-top: auto;
+    padding: 13px 14px;
+    font-size: 13px;
+    line-height: 1.12;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.cta-nowrap {
+    white-space: nowrap;
 }
 
 .included-panel,
@@ -1967,6 +1984,10 @@ body {
     line-height: 1.45;
     padding: 8px 0;
     border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.formats-cta {
+    margin-top: 26px;
 }
 
 .muted-note {
@@ -2609,6 +2630,14 @@ body {
 
     .price-card h3 {
         font-size: 24px;
+    }
+
+    .btn-buy-large.cta-nowrap {
+        width: 100%;
+        padding-left: 14px;
+        padding-right: 14px;
+        font-size: 15px;
+        letter-spacing: 0.4px;
     }
 
     .price-meta {
