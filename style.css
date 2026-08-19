@@ -778,6 +778,8 @@ body {
     text-decoration: none;
     font-weight: bold;
     text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
     position: relative;
     overflow: hidden;
     transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;

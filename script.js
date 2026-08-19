@@ -364,7 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const payload = {
             name,
             phone: formatPhone(phoneDigits),
-            contactMethod: formData.get('contactMethod') || 'call',
             privacyConsent: true,
             page: window.location.href
         };
@@ -380,7 +379,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!response.ok) throw new Error('Request failed');
             form.reset();
-            form.contactMethod.value = 'call';
             setPhone(phoneInput, '');
             if (status) status.textContent = '';
             form.hidden = true;
