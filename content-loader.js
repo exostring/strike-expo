@@ -11,6 +11,7 @@
 function applyContent(content) {
   const { seo = {}, texts = {}, features = [], participants = [] } = content || {};
   if (document.body.classList.contains('exhibitor-page')) {
+    applyExhibitorsPage(texts.exhibitorsPage || {});
     renderParticipants(participants);
     renderSchemaParticipants(participants);
     return;
@@ -240,4 +241,170 @@ function el(tag, className, value) {
 
 function text(value) {
   return document.createTextNode(value);
+}
+
+function applyExhibitorsPage(t) {
+  applySeo(t.seo || {});
+  applyExpHero(t.hero || {});
+  applyExpAbout(t.about || {});
+  applyExpValue(t.value || {});
+  applyExpAudience(t.audience || {});
+  applyExpFormats(t.formats || {});
+  applyExpBusiness(t.business || {});
+  applyExpLocation(t.location || {});
+  applyExpExhibitorsList(t.exhibitorsList || {});
+  applyExpFaq(t.faq || {});
+  applyExpLead(t.lead || {});
+  applyExpFooter(t.footer || {});
+}
+
+function applyExpHero(hero) {
+  setText('[data-content="expHeroKicker"]', hero.kicker);
+  const title = document.querySelector('[data-content="expHeroTitle"]');
+  if (title && (hero.titleBefore !== undefined || hero.titleAccent !== undefined)) {
+    title.textContent = '';
+    title.append(text(hero.titleBefore || ''));
+    const accent = document.createElement('span');
+    accent.className = 'gold-text';
+    accent.textContent = hero.titleAccent || '';
+    title.append(accent);
+  }
+  setText('[data-content="expHeroSubtitle"]', hero.subtitle);
+  document.querySelectorAll('[data-exp-metric]').forEach((node, index) => {
+    const item = hero.metrics?.[index];
+    if (!item) return;
+    setChildText(node, '[data-exp-metric-value]', item.value);
+    setChildText(node, '[data-exp-metric-label]', item.label);
+  });
+  setText('[data-content="expHeroCity"]', hero.city);
+  setText('[data-content="expHeroDate"]', hero.date);
+  setText('[data-content="expHeroVenueTitle"]', hero.venueTitle);
+  setText('[data-content="expHeroVenueAddress"]', hero.venueAddress);
+  setText('[data-content="expHeroDeadline"]', hero.deadline);
+}
+
+function applyExpAbout(about) {
+  setText('[data-content="expAboutTitle"]', about.title);
+  setText('[data-content="expAboutP1"]', about.p1);
+  setText('[data-content="expAboutHighlight"]', about.highlight);
+  setText('[data-content="expAboutP2"]', about.p2);
+  document.querySelectorAll('[data-exp-about-stat]').forEach((node, index) => {
+    const item = about.stats?.[index];
+    if (!item) return;
+    setChildText(node, '.stat-number', item.number);
+    setMultiline(node.querySelector('.stat-label'), item.label);
+  });
+}
+
+function applyExpValue(value) {
+  setText('[data-content="expValueTitle"]', value.title);
+  setText('[data-content="expValueSubtitle"]', value.subtitle);
+  document.querySelectorAll('[data-exp-value-item]').forEach((node, index) => {
+    const item = value.items?.[index];
+    if (!item) return;
+    setChildText(node, 'h3', item.title);
+    setChildText(node, 'p', item.text);
+  });
+}
+
+function applyExpAudience(audience) {
+  setText('[data-content="expAudienceTitle"]', audience.title);
+  document.querySelectorAll('[data-exp-audience-item]').forEach((node, index) => {
+    const item = audience.items?.[index];
+    if (!item) return;
+    setChildText(node, 'h4', item.title);
+    setChildText(node, 'p', item.text);
+  });
+}
+
+function applyExpFormats(formats) {
+  setText('[data-content="expFormatsTitle"]', formats.title);
+  setText('[data-content="expFormatsDescription"]', formats.description);
+  document.querySelectorAll('[data-exp-pricing-card]').forEach((card, index) => {
+    const item = formats.cards?.[index];
+    if (!item) return;
+    setChildText(card, '.price-label', item.label);
+    setChildText(card, 'h3', item.price);
+    setChildText(card, 'p', item.description);
+    setChildText(card, '.price-meta', item.meta);
+    setBulletList(card.querySelector(`[data-content="expPricingFeatures${index}"]`), item.features);
+  });
+  setText('[data-content="expTariffNote"]', formats.tariffNote);
+  const build = formats.build || {};
+  setText('[data-content="expBuildTitle"]', build.title);
+  setText('[data-content="expBuildDescription"]', build.description);
+  setText('[data-content="expBuildStandardTitle"]', build.standardTitle);
+  setBulletList(document.querySelector('[data-content="expBuildStandardItems"]'), build.standardItems);
+  setText('[data-content="expBuildIncludedTitle"]', build.includedTitle);
+  setBulletList(document.querySelector('[data-content="expBuildIncludedItems"]'), build.includedItems);
+  setText('[data-content="expBuildDeadline"]', build.deadline);
+}
+
+function applyExpBusiness(business) {
+  document.querySelectorAll('[data-exp-business-card]').forEach((node, index) => {
+    const item = business.cards?.[index];
+    if (!item) return;
+    setChildText(node, 'h2', item.title);
+    setChildText(node, 'p', item.text);
+  });
+}
+
+function applyExpLocation(location) {
+  setText('[data-content="expLocationTitle"]', location.title);
+  setText('[data-content="expLocationDescription"]', location.description);
+  setText('[data-content="expLocationAddressBlock"]', location.addressBlock);
+  document.querySelectorAll('[data-exp-location-stat]').forEach((node, index) => {
+    const item = location.stats?.[index];
+    if (!item) return;
+    setChildText(node, 'h5', item.title);
+    setMultiline(node.querySelector('p'), item.text);
+  });
+}
+
+function applyExpExhibitorsList(list) {
+  setText('[data-content="expExhibitorsTitle"]', list.title);
+  setText('[data-content="expExhibitorsDescription"]', list.description);
+}
+
+function applyExpFaq(faq) {
+  setText('[data-content="expFaqTitle"]', faq.title);
+  document.querySelectorAll('[data-exp-faq-item]').forEach((node, index) => {
+    const item = faq.items?.[index];
+    if (!item) return;
+    setChildText(node, 'summary', item.question);
+    setChildText(node, 'p', item.answer);
+  });
+}
+
+function applyExpLead(lead) {
+  setText('[data-content="expLeadKicker"]', lead.kicker);
+  setText('[data-content="expLeadTitle"]', lead.title);
+  setText('[data-content="expLeadDescription"]', lead.description);
+  const phoneLink = document.querySelector('[data-content="expLeadPhone"]');
+  if (phoneLink && lead.phone) {
+    phoneLink.textContent = lead.phone;
+    phoneLink.href = `tel:${lead.phone.replace(/[^\d+]/g, '')}`;
+  }
+  const tgLink = document.querySelector('[data-content="expLeadTelegram"]');
+  if (tgLink && lead.telegram) {
+    tgLink.textContent = lead.telegram;
+    tgLink.href = normalizeUrl(lead.telegram);
+  }
+}
+
+function applyExpFooter(footer) {
+  setText('[data-content="expFooterCopyright"]', footer.copyright);
+  const emailLink = document.querySelector('[data-content="expFooterEmail"]');
+  if (emailLink && footer.email) {
+    emailLink.textContent = footer.email;
+    emailLink.href = `mailto:${footer.email}`;
+  }
+}
+
+function setBulletList(ul, value) {
+  if (!ul || !value) return;
+  const items = String(value).split('\n').map(line => line.trim()).filter(Boolean);
+  if (!items.length) return;
+  ul.textContent = '';
+  items.forEach(item => ul.append(el('li', '', item)));
 }
