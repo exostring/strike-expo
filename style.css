@@ -1638,6 +1638,8 @@ body {
     justify-content: flex-end;
     pointer-events: none;
     z-index: 1;
+    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
 }
 
 .exhibitor-hero-image::before {
