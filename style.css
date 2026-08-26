@@ -583,16 +583,29 @@ body {
     }
     
     .info-row {
-        flex-direction: column;
-        gap: 15px;
-        margin-bottom: 30px; /* Tighter spacing before button */
+        flex-direction: row;
+        gap: 16px;
+        margin-bottom: 22px;
     }
-    
+
+    .info-col h3 {
+        font-size: 16px;
+        margin-bottom: 2px;
+    }
+
+    .info-col p {
+        font-size: 13px;
+    }
+
+    .info-col .gold-text.bold {
+        font-size: 15px;
+    }
+
     .info-col.with-border {
-        border-left: none;
-        border-top: 1px solid rgba(255,255,255,0.15);
-        padding-left: 0;
-        padding-top: 15px;
+        border-left: 1px solid rgba(255,255,255,0.15);
+        border-top: none;
+        padding-left: 16px;
+        padding-top: 0;
     }
     
     .btn-buy-large { display: inline-block; text-align: center; text-decoration: none; cursor: pointer; box-sizing: border-box;
@@ -2683,6 +2696,305 @@ body {
         line-height: 1.55;
         padding-left: 16px;
         padding-right: 16px;
+    }
+}
+
+
+
+/* =============================================
+   ПРИЗЫ ОТ ПАРТНЁРОВ — секция
+   ============================================= */
+
+.prizes-section {
+    padding: 0 max(60px, calc(50vw - 720px)) 70px;
+    position: relative;
+    z-index: 2;
+}
+
+.prizes-intro {
+    margin: 20px auto 36px;
+    max-width: 680px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #d4d4d4;
+}
+
+/* Карточка приза */
+.prize-card {
+    margin-bottom: 28px;
+}
+
+.prize-card__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Фотогалерея — обе картинки полностью видны */
+.prize-card__photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.prize-photo {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(220, 185, 106, 0.12);
+    transition: border-color 0.3s ease;
+}
+
+.prize-photo:hover {
+    border-color: rgba(220, 185, 106, 0.4);
+}
+
+/* Партнёр — лейбл + логотип */
+.prize-card__partner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.prize-card__from {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+    font-weight: 600;
+}
+
+.prize-card__logo-link {
+    display: flex;
+    align-items: center;
+}
+
+.prize-card__logo {
+    height: 26px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+}
+
+.prize-card__logo:hover {
+    opacity: 1;
+}
+
+/* Название — кликабельная ссылка */
+.prize-card__name-link {
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 18px;
+}
+
+.prize-card__name-link:hover .prize-card__name {
+    opacity: 0.8;
+}
+
+.prize-card__name {
+    font-size: 32px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.1;
+    transition: opacity 0.2s;
+}
+
+/* Характеристики */
+.prize-specs {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.prize-specs li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #ccc;
+    padding-left: 16px;
+    position: relative;
+}
+
+.prize-specs li::before {
+    content: '\2014';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+}
+
+/* Теги характеристик */
+.prize-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 4px;
+}
+
+.prize-tag {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #ddd;
+    background: rgba(220, 185, 106, 0.07);
+    border: 1px solid rgba(220, 185, 106, 0.2);
+    padding: 4px 10px;
+}
+
+/* Баннер "Список призов пополняется" */
+.prizes-growing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(220, 185, 106, 0.2);
+    background: rgba(220, 185, 106, 0.04);
+    font-size: 14px;
+    color: #aaa;
+    text-align: center;
+}
+
+.prizes-socials {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* =============================================
+   ШАГИ — стиль как на референсе
+   Тёмные карточки с большой полупрозрачной цифрой
+   ============================================= */
+
+.prizes-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-bottom: 30px;
+}
+
+.prizes-step {
+    position: relative;
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 22px 22px;
+    overflow: hidden;
+    min-height: 120px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.prizes-step__bg {
+    position: absolute;
+    top: -20px;
+    right: 5px;
+    font-size: 110px;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.04);
+    font-family: 'TT Firs Neue', sans-serif;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -4px;
+}
+
+.prizes-step__content {
+    position: relative;
+    z-index: 1;
+}
+
+.prizes-step__title {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.prizes-step__desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #aaa;
+}
+
+.prizes-step__desc strong {
+    color: #e0e0e0;
+}
+
+/* =============================================
+   GIVEAWAY BADGE — в glass-panel на главной
+   ============================================= */
+
+.giveaway-badge {
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #888;
+}
+
+.giveaway-badge__link {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.giveaway-badge__link:hover {
+    text-decoration: underline;
+}
+
+/* =============================================
+   АДАПТИВ
+   ============================================= */
+
+@media (max-width: 900px) {
+    .prizes-section {
+        padding: 0 20px 50px;
+    }
+
+    .prize-card__inner {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .prize-card__photos {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .prize-photo {
+        height: 180px;
+    }
+
+    .prizes-steps {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+
+    .prizes-step__bg {
+        font-size: 90px;
+    }
+
+    .prize-card__name {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .giveaway-badge {
+        font-size: 12px;
+    }
+
+    .prize-photo {
+        height: 160px;
     }
 }
 

@@ -115,6 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', event => {
             if (!window.ym || !link.dataset.goal) return;
 
+            const isQtickets = link.href && link.href.includes('qtickets.ru');
+            if (isQtickets) {
+                // Для QTickets не перехватываем клик — виджет сам откроет попап.
+                // Метрику отправляем параллельно, без preventDefault.
+                ym(111553845, 'reachGoal', link.dataset.goal);
+                return;
+            }
+
             const opensNewTab = link.target && link.target.toLowerCase() !== '_self';
             if (opensNewTab || event.defaultPrevented) {
                 ym(111553845, 'reachGoal', link.dataset.goal);

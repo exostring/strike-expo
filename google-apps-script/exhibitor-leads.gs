@@ -1,4 +1,7 @@
 const SHEET_NAME = 'Заявки экспонентов';
+const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1bi0XBiBy5ecQT0GBw_txJl3B9Iqn0hVAKjlyC09VLRE';
+const TELEGRAM_BOT_TOKEN = '8905480869:AAGozqhW_YeDK4UqTEeSjeblqDJCIQwXhdI';
+const TELEGRAM_CHAT_IDS = ['442509142', '383125035', '1106530859'];
 
 function doGet() {
   return ContentService
@@ -19,8 +22,10 @@ function doPost(e) {
     data.userAgent || ''
   ]);
 
+  const notification = notifyTelegramRecipients_(data);
+
   return ContentService
-    .createTextOutput(JSON.stringify({ ok: true }))
+    .createTextOutput(JSON.stringify({ ok: true, telegramSent: notification.ok, telegramError: notification.error || '' }))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
@@ -58,6 +63,54 @@ function contactMethodLabel_(value) {
 
 function normalizePhoneForSheet_(value) {
   return String(value || '').replace(/^\+/, '');
+}
+
+function notifyTelegramRecipients_(data) {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheetUrl = spreadsheet ? spreadsheet.getUrl() : SPREADSHEET_URL;
+  const message = [
+    'Получена новая заявка',
+    `Имя: ${data.name || '-'}`,
+    `Телефон: ${data.phone || '-'}`,
+    `Таблица: ${spreadsheetUrl || SPREADSHEET_URL}`
+  ].join('\n');
+  const errors = [];
+
+  TELEGRAM_CHAT_IDS.forEach((chatId) => {
+    try {
+      const response = UrlFetchApp.fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'post',
+        contentType: 'application/json',
+        payload: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          disable_web_page_preview: true
+        }),
+        muteHttpExceptions: true
+      });
+
+      if (response.getResponseCode() !== 200) {
+        errors.push(`${chatId}: ${response.getContentText()}`);
+      }
+    } catch (error) {
+      errors.push(`${chatId}: ${String(error && error.message ? error.message : error)}`);
+    }
+  });
+
+  if (errors.length) {
+    console.error(`Telegram notification errors: ${errors.join(' | ')}`);
+  } else {
+    console.log('Telegram lead notification sent');
+  }
+
+  return { ok: errors.length < TELEGRAM_CHAT_IDS.length, error: errors.join(' | ') };
+}
+
+function testNotify() {
+  return notifyTelegramRecipients_({
+    name: 'Тест Apps Script',
+    phone: '+7 (999) 000-00-00'
+  });
 }
 
 function testWrite() {
