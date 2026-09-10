@@ -396,6 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (success) success.hidden = false;
             dialog?.setAttribute('aria-labelledby', 'lead-success-title');
             if (window.ym) ym(111553845, 'reachGoal', 'exhibitor_lead_submit');
+            if (window._tmr) _tmr.push({ id: '3793447', type: 'reachGoal', goal: 'exhibitor_lead_submit' });
         } catch {
             if (status) status.textContent = 'Не получилось отправить. Позвоните: +7 (905) 809-05-17.';
         } finally {
