@@ -2191,6 +2191,23 @@ body {
     gap: 8px;
 }
 
+.lead-form [data-team-link-field][hidden] {
+    display: none;
+}
+
+.ticket-price-note {
+    margin: 12px 0 0;
+    color: rgba(255,255,255,0.78);
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.ticket-price-note strong {
+    color: var(--gold);
+    font-size: 18px;
+}
+
 .lead-form span,
 .lead-form legend {
     color: rgba(255,255,255,0.72);
@@ -2199,7 +2216,8 @@ body {
 }
 
 .lead-form input[type="text"],
-.lead-form input[type="tel"] {
+.lead-form input[type="tel"],
+.lead-form input[type="url"] {
     width: 100%;
     height: 50px;
     border: 1px solid rgba(220,185,106,0.26);
@@ -2211,7 +2229,8 @@ body {
 }
 
 .lead-form input[type="text"]:focus,
-.lead-form input[type="tel"]:focus {
+.lead-form input[type="tel"]:focus,
+.lead-form input[type="url"]:focus {
     border-color: var(--gold);
     box-shadow: 0 0 0 3px rgba(220,185,106,0.16);
     outline: none;

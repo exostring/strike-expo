@@ -145,16 +145,18 @@ async function saveExhibitorLead(req, res) {
   const data = await readJson(req, 32 * 1024);
   const lead = {
     createdAt: new Date().toISOString(),
+    leadType: data.leadType === 'team' ? 'team' : 'exhibitor',
     name: cleanField(data.name, 80),
     phone: cleanField(data.phone, 40),
+    teamLink: cleanField(data.teamLink, 500),
     contactMethod: cleanContactMethod(data.contactMethod),
     privacyConsent: data.privacyConsent === true,
     page: cleanField(data.page, 160),
     userAgent: cleanField(req.headers['user-agent'], 220)
   };
 
-  if (!lead.name || !lead.phone || !lead.privacyConsent) {
-    return text(res, 400, 'Name, phone and privacy consent are required');
+  if (!lead.name || !lead.phone || !lead.privacyConsent || (lead.leadType === 'team' && !/^https?:\/\//i.test(lead.teamLink))) {
+    return text(res, 400, 'Valid name, phone, team link and privacy consent are required');
   }
 
   if (googleSheetsWebhook) {

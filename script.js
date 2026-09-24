@@ -189,13 +189,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const firstInput = form.querySelector('input[name="name"]');
     const phoneInput = form.querySelector('input[name="phone"]');
     const consentInput = form.querySelector('input[name="privacyConsent"]');
+    const typeInput = form.querySelector('input[name="leadType"]');
+    const teamLinkField = form.querySelector('[data-team-link-field]');
+    const teamLinkInput = form.querySelector('input[name="teamLink"]');
     const status = form.querySelector('.lead-form-status');
     const success = modal.querySelector('.lead-success');
     const dialog = modal.querySelector('.lead-modal-dialog');
     const introNodes = modal.querySelectorAll('[data-lead-intro]');
+    const defaultIntro = Array.from(introNodes, node => node.textContent);
+    const submitButton = form.querySelector('button[type="submit"]');
 
     const openModal = event => {
         event.preventDefault();
+        const isTeam = event.currentTarget.hasAttribute('data-open-team-lead');
+        typeInput.value = isTeam ? 'team' : 'exhibitor';
+        teamLinkField.hidden = !isTeam;
+        teamLinkInput.required = isTeam;
+        introNodes[0].textContent = isTeam ? 'Заявка для команды' : defaultIntro[0];
+        introNodes[1].textContent = isTeam ? 'Участие команды' : defaultIntro[1];
+        submitButton.textContent = isTeam ? 'ОТПРАВИТЬ ЗАЯВКУ КОМАНДЫ' : 'ОБСУДИТЬ СТЕНД';
         dialog?.setAttribute('aria-labelledby', 'lead-modal-title');
         introNodes.forEach(node => {
             node.hidden = false;
@@ -234,6 +246,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.querySelectorAll('[data-open-lead]').forEach(button => {
+        button.addEventListener('click', openModal);
+    });
+    document.querySelectorAll('[data-open-team-lead]').forEach(button => {
         button.addEventListener('click', openModal);
     });
 
@@ -340,6 +355,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
         const name = String(formData.get('name') || '').trim();
         const phoneDigits = cleanPhoneDigits(formData.get('phone'));
+        const leadType = typeInput.value;
+        const teamLink = String(formData.get('teamLink') || '').trim();
 
         if (status) status.textContent = '';
 
@@ -363,6 +380,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (leadType === 'team' && !/^https?:\/\//i.test(teamLink)) {
+            if (status) status.textContent = 'Добавьте ссылку на страницу или сообщество команды.';
+            teamLinkInput?.focus();
+            return;
+        }
+
         if (!consentInput?.checked) {
             if (status) status.textContent = 'Нужно согласие на обработку персональных данных.';
             consentInput?.focus();
@@ -373,6 +396,8 @@ document.addEventListener('DOMContentLoaded', () => {
             name,
             phone: formatPhone(phoneDigits),
             privacyConsent: true,
+            leadType,
+            ...(leadType === 'team' ? { teamLink } : {}),
             page: window.location.href
         };
 
@@ -387,6 +412,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!response.ok) throw new Error('Request failed');
             form.reset();
+            teamLinkField.hidden = true;
+            teamLinkInput.required = false;
             setPhone(phoneInput, '');
             if (status) status.textContent = '';
             form.hidden = true;

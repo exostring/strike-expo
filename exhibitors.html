@@ -378,6 +378,25 @@
             </div>
         </section>
 
+        <section id="teams" class="features-section exhibitor-section exhibitor-section-tight">
+            <div class="container">
+                <div class="section-header-row">
+                    <div class="title-col">
+                        <p class="legal-kicker">Для страйкбольных и военно-тактических команд</p>
+                        <h2 class="section-title">Командам на Strike Expo</h2>
+                    </div>
+                    <a class="btn-outline" href="#lead-form" data-open-team-lead>ПОДАТЬ ЗАЯВКУ КОМАНДЫ</a>
+                </div>
+                <div class="features-grid audience-grid teams-benefits">
+                    <article class="feature-card glass-panel"><h4>Зона команд</h4><p>Разместите стенд в специальной зоне для команд.</p></article>
+                    <article class="feature-card glass-panel"><h4>Бесплатное участие</h4><p>Для команд участие в выставке бесплатное.</p></article>
+                    <article class="feature-card glass-panel"><h4>Покажите себя</h4><p>Расскажите о команде и познакомьтесь с аудиторией выставки.</p></article>
+                    <article class="feature-card glass-panel"><h4>Своя лекция</h4><p>Проведите бесплатную лекцию на площадке.</p></article>
+                    <article class="feature-card glass-panel"><h4>Новые рекруты</h4><p>Найдите людей, которые хотят присоединиться к команде.</p></article>
+                </div>
+            </div>
+        </section>
+
         <section id="faq" class="exhibitor-section">
             <div class="container">
                 <h2 class="section-title text-center" data-content="expFaqTitle">Перед бронированием стенда</h2>
@@ -483,6 +502,7 @@
             <p class="legal-kicker" data-lead-intro>Участие в выставке</p>
             <h2 id="lead-modal-title" data-lead-intro>Обсудим ваш стенд</h2>
             <form id="lead-form" class="lead-form" novalidate>
+                <input type="hidden" name="leadType" value="exhibitor">
                 <label>
                     <span>Имя</span>
                     <input type="text" name="name" autocomplete="name" required>
@@ -490,6 +510,10 @@
                 <label>
                     <span>Телефон</span>
                     <input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required>
+                </label>
+                <label data-team-link-field hidden>
+                    <span>Ссылка на команду</span>
+                    <input type="url" name="teamLink" autocomplete="url" placeholder="https://vk.com/ваша_команда">
                 </label>
                 <label class="privacy-consent">
                     <input type="checkbox" name="privacyConsent" required>
@@ -512,8 +536,8 @@
             <p class="legal-kicker">Персональные данные</p>
             <h2 id="privacy-modal-title">Согласие на обработку персональных данных</h2>
             <div class="privacy-text">
-                <p>Оставляя заявку на участие в Strike Expo, вы соглашаетесь на обработку персональных данных, указанных в форме: имени, телефона и выбранного способа связи.</p>
-                <p>Данные используются только для связи по вопросам участия в выставке, подбора стенда, согласования условий размещения и отправки организационной информации.</p>
+                <p>Оставляя заявку на участие в Strike Expo, вы соглашаетесь на обработку персональных данных, указанных в форме: имени, телефона, ссылки на команду и выбранного способа связи.</p>
+                <p>Данные используются только для связи по вопросам участия в выставке, подбора стенда или размещения команды, согласования условий и отправки организационной информации.</p>
                 <p>Оператор обработки: ИП ГАННОШИНА ОЛЬГА АНАТОЛЬЕВНА, ИНН 667305409853, ОГРНИП 325665800159432. Контакт для отзыва согласия: <a href="mailto:strikeexpo@yandex.ru">strikeexpo@yandex.ru</a>.</p>
                 <p>Согласие действует до момента его отзыва. Вы можете отозвать согласие, направив письмо на указанный email. После получения отзыва данные будут удалены, если их хранение не требуется по закону.</p>
             </div>

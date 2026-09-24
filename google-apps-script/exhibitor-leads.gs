@@ -19,7 +19,9 @@ function doPost(e) {
     normalizePhoneForSheet_(data.phone),
     contactMethodLabel_(data.contactMethod),
     data.page || '',
-    data.userAgent || ''
+    data.userAgent || '',
+    data.leadType === 'team' ? 'Команда' : 'Экспонент',
+    data.teamLink || ''
   ]);
 
   const notification = notifyTelegramRecipients_(data);
@@ -43,10 +45,19 @@ function getLeadSheet_() {
       'Телефон',
       'Способ связи',
       'Страница',
-      'User Agent'
+      'User Agent',
+      'Тип заявки',
+      'Ссылка на команду'
     ]);
     sheet.setFrozenRows(1);
   }
+
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  ['Тип заявки', 'Ссылка на команду'].forEach((header) => {
+    if (!headers.includes(header)) {
+      sheet.getRange(1, sheet.getLastColumn() + 1).setValue(header);
+    }
+  });
 
   return sheet;
 }
@@ -69,9 +80,10 @@ function notifyTelegramRecipients_(data) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const spreadsheetUrl = spreadsheet ? spreadsheet.getUrl() : SPREADSHEET_URL;
   const message = [
-    'Получена новая заявка',
+    data.leadType === 'team' ? 'Заявка для команды' : 'Новая заявка экспонента',
     `Имя: ${data.name || '-'}`,
     `Телефон: ${data.phone || '-'}`,
+    ...(data.leadType === 'team' ? [`Команда: ${data.teamLink || '-'}`] : []),
     `Таблица: ${spreadsheetUrl || SPREADSHEET_URL}`
   ].join('\n');
   const errors = [];
@@ -117,8 +129,9 @@ function testWrite() {
   return doPost({
     postData: {
       contents: JSON.stringify({
-        name: 'Тест Apps Script',
-        phone: '+7 (999) 000-00-00',
+      name: 'Тест Apps Script',
+      phone: '+7 (999) 000-00-00',
+        leadType: 'exhibitor',
         contactMethod: 'call',
         page: 'manual test',
         userAgent: 'Apps Script'
