@@ -230,9 +230,26 @@ async function readJson(req, limit) {
   return JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
 }
 
+// Only these files are public. Everything else in the project root (server code,
+// data/, docs, seed files, lead logs) must never be served over HTTP.
+const publicFiles = new Set([
+  '/index.html', '/exhibitors.html', '/offer.html',
+  '/script.js', '/content-loader.js', '/style.css',
+  '/favi.png', '/robots.txt', '/sitemap.xml'
+]);
+const publicDirs = ['/img/', '/font/'];
+
+function isPublicPath(pathname) {
+  const normalized = path.posix.normalize(pathname);
+  if (normalized !== pathname) return false;
+  if (normalized.split('/').some(part => part.startsWith('.') || part === '..')) return false;
+  return publicFiles.has(normalized) || publicDirs.some(dir => normalized.startsWith(dir));
+}
+
 function sendPublic(req, res, pathname) {
   const clean = pathname === '/' ? '/index.html' : pathname;
   if (clean === '/index.html') return sendIndex(res);
+  if (!isPublicPath(clean)) return notFound(res);
   return sendFile(res, path.join(root, clean.replace(/^\/+/, '')), root);
 }
 
