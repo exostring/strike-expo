@@ -1254,7 +1254,7 @@ body {
 
 .schema-layout {
     display: grid;
-    grid-template-columns: minmax(0, 760px);
+    grid-template-columns: minmax(420px, 650px) minmax(190px, 230px);
     gap: 18px;
     align-items: stretch;
     justify-content: center;
