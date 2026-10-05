@@ -3100,35 +3100,78 @@ body {
     }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
     .coverage-section {
         padding: 0 16px 48px;
     }
 
     .coverage-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
-    .coverage-card {
-        padding: 8px 8px 14px;
+    .coverage-card:not(.coverage-card--more) {
+        display: grid;
+        grid-template-columns: 112px minmax(0, 1fr);
+        align-items: center;
+        column-gap: 18px;
+        padding: 10px 16px 10px 10px;
+        text-align: left;
     }
 
-    .coverage-name {
+    .coverage-photo {
+        margin-bottom: 0;
+    }
+
+    .coverage-text {
+        align-self: center;
+    }
+
+    .coverage-card:not(.coverage-card--more) .coverage-name {
+        font-size: 22px;
+    }
+
+    .coverage-card:not(.coverage-card--more) .coverage-note {
+        margin-top: 4px;
         font-size: 14px;
-        letter-spacing: 0.02em;
-    }
-
-    .coverage-note {
-        font-size: 12px;
     }
 
     .coverage-card--more {
-        grid-column: 1 / -1;
-        padding: 22px 16px;
+        padding: 22px 18px;
     }
 
     .coverage-card--more .coverage-name {
-        font-size: 18px;
+        font-size: 20px;
+    }
+}
+
+/* Шапка: 7 пунктов меню должны помещаться на ноутбучных ширинах */
+@media (max-width: 1520px) and (min-width: 1201px) {
+    .header {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+
+    .nav {
+        gap: 18px;
+    }
+
+    .nav a {
+        font-size: 13px;
+        letter-spacing: 0.8px;
+    }
+
+    .header-right {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 1360px) and (min-width: 1201px) {
+    .header-socials {
+        display: none;
+    }
+
+    .header-right {
+        margin-left: 24px;
     }
 }
