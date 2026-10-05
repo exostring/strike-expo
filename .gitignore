@@ -4,3 +4,7 @@ node_modules/
 .env.*
 !.env.example
 .playwright-cli/
+
+# рекламные креативы и исходные фото (не для репозитория)
+ads-creatives/
+blogers/

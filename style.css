@@ -1254,7 +1254,7 @@ body {
 
 .schema-layout {
     display: grid;
-    grid-template-columns: minmax(420px, 650px) minmax(190px, 230px);
+    grid-template-columns: minmax(0, 760px);
     gap: 18px;
     align-items: stretch;
     justify-content: center;
@@ -3019,3 +3019,116 @@ body {
 
 
 
+
+
+/* Освещение: блогеры */
+.coverage-section {
+    padding: 0 max(60px, calc(50vw - 720px)) 70px;
+    position: relative;
+    z-index: 2;
+}
+
+.coverage-intro {
+    margin: 20px auto 36px;
+    max-width: 680px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #d4d4d4;
+}
+
+.coverage-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    margin-bottom: 36px;
+}
+
+.coverage-card {
+    padding: 14px 14px 22px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.coverage-photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.coverage-name {
+    color: var(--gold);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.coverage-note {
+    margin-top: 6px;
+    color: #d4d4d4;
+    font-size: 15px;
+}
+
+.coverage-card--more {
+    justify-content: center;
+    padding: 30px 22px;
+}
+
+.coverage-more-text {
+    margin-top: 14px;
+    color: #d4d4d4;
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+@media (max-width: 960px) {
+    .coverage-section {
+        padding: 0 24px 56px;
+    }
+
+    .coverage-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .coverage-name {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 520px) {
+    .coverage-section {
+        padding: 0 16px 48px;
+    }
+
+    .coverage-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .coverage-card {
+        padding: 8px 8px 14px;
+    }
+
+    .coverage-name {
+        font-size: 14px;
+        letter-spacing: 0.02em;
+    }
+
+    .coverage-note {
+        font-size: 12px;
+    }
+
+    .coverage-card--more {
+        grid-column: 1 / -1;
+        padding: 22px 16px;
+    }
+
+    .coverage-card--more .coverage-name {
+        font-size: 18px;
+    }
+}

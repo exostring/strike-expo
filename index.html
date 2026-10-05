@@ -104,9 +104,9 @@ _tmr.push({id: "3793447", type: "pageView", start: (new Date()).getTime()});
             <nav class="nav">
                 <a href="#about">ВЫСТАВКА</a>
                 <a href="#prizes">ПРИЗЫ</a>
+                <a href="#coverage">ОСВЕЩЕНИЕ</a>
                 <a href="#schedule">РАСПИСАНИЕ</a>
                 <a href="#location">ЛОКАЦИЯ</a>
-                <a href="#exhibitors">УЧАСТНИКИ</a>
                 <a href="exhibitors.html">БРОНЬ СТЕНДА</a>
             </nav>
             <div class="social-links header-socials" aria-label="Соцсети Strike Expo">
@@ -320,6 +320,44 @@ _tmr.push({id: "3793447", type: "pageView", start: (new Date()).getTime()});
             </div>
         </section>
 
+        <!-- БЛОК "Освещение" -->
+        <section id="coverage" class="coverage-section">
+            <div class="container">
+                <h2 class="section-title text-center">ОСВЕЩЕНИЕ</h2>
+                <p class="coverage-intro text-center">Выставку освещают блогеры страйкбола и милитари. На Страйк Экспо с ними можно будет познакомиться и пообщаться лично.</p>
+
+                <div class="coverage-grid">
+                    <article class="coverage-card glass-panel">
+                        <div class="bracket-tl"></div>
+                        <div class="bracket-br"></div>
+                        <img src="img/bloggers/evgenevich.webp" loading="lazy" alt="Блогер Евгеньевич (Red Airsoft)" class="coverage-photo" width="640" height="800">
+                        <h3 class="coverage-name">Евгеньевич</h3>
+                        <p class="coverage-note">Red Airsoft</p>
+                    </article>
+                    <article class="coverage-card glass-panel">
+                        <div class="bracket-tl"></div>
+                        <div class="bracket-br"></div>
+                        <img src="img/bloggers/xiii.webp" loading="lazy" alt="Блогер XIII" class="coverage-photo" width="640" height="800">
+                        <h3 class="coverage-name">XIII</h3>
+                    </article>
+                    <article class="coverage-card glass-panel">
+                        <div class="bracket-tl"></div>
+                        <div class="bracket-br"></div>
+                        <img src="img/bloggers/kovalski.webp" loading="lazy" alt="Блогер Ковальски" class="coverage-photo" width="640" height="800">
+                        <h3 class="coverage-name">Ковальски</h3>
+                    </article>
+                    <article class="coverage-card coverage-card--more glass-panel">
+                        <div class="bracket-tl"></div>
+                        <div class="bracket-br"></div>
+                        <h3 class="coverage-name">И другие блогеры</h3>
+                        <p class="coverage-more-text">На выставке будут и другие блогеры. Имена объявим в наших соцсетях по мере подтверждения участия.</p>
+                    </article>
+                </div>
+
+                <div class="section-cta"><a href="https://qtickets.ru/event/241757?base_color=042b28" class="btn-buy-large" data-goal="buy_ticket">КУПИТЬ БИЛЕТ</a><p class="ticket-price-note"><strong>Стоимость входного билета — 550 ₽</strong><br>На входе цена повысится</p></div>
+            </div>
+        </section>
+
         <!-- БЛОК "Что нас ждёт" -->
         <section id="schedule" class="features-section">
             <div class="container">
@@ -404,198 +442,11 @@ _tmr.push({id: "3793447", type: "pageView", start: (new Date()).getTime()});
                     <div class="bracket-br"></div>
                     <div class="schema-layout">
                         <img src="img/floorplan-schema-zala.webp" loading="lazy" alt="Схема зала" data-content="schemaImage">
-                        <aside class="schema-participants" aria-label="Участники на схеме" data-content="schemaParticipants"></aside>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- БЛОК 4: Участники -->
-        <section id="exhibitors" class="exhibitors-section">
-            <div class="container">
-                <div class="section-header-row">
-                    <div class="title-col">
-                        <h2 class="section-title" data-content="exhibitorsTitle">УЧАСТНИКИ ВЫСТАВКИ</h2>
-                        <p class="exhibitors-desc" data-content="exhibitorsDesc">Количество мест ограничено. Заявки на застройку принимаются до 10 октября 2026 года.</p>
-                    </div>
-                    <a href="exhibitors.html" class="btn-outline" data-goal="book_place">ЗАБРОНИРОВАТЬ СТЕНД</a>
-                </div>
-                
-                <div class="exhibitors-grid" data-content="participantsGrid">
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_0.jpg" loading="lazy" alt="TAG-innovation" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>TAG-innovation</h4>
-                            <span class="stand-number">Стенд №П-05</span>
-                            <p>Компания «TAG-innovation», начиная с 2009 года, занимается разработкой и производством оборудования для военно-спортивных игр. Собственный станочный парк, состоящий из современных высокоточных станков с «ЧПУ», позволяет не только поддерживать стабильное высокое качество продукции на каждом из этапов производственного цикла, но и обеспечивает гибкость и производительность предприятия.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_1.jpg" loading="lazy" alt="MBC" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>MBC</h4>
-                            <span class="stand-number">Стенд № П-02</span>
-                            <p>Компания «Рейд» с 2011 года занимается разработкой и производством модульного военного снаряжения для специальных сил Министерства обороны России, ФСВНГ, ФСБ и других силовых ведомств под торговой маркой «МВС». В своей работе мы опираемся на четыре основных критерия применения снаряжения: комфорт, эргономика, защита и технологии. Использование современного оборудования и уникальных технических решений позволяет на нашей производственной базе реализовывать проекты под потребности конкретных подразделений и отдельных родов войск</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_2.jpg" loading="lazy" alt="Garsing" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Garsing</h4>
-                            <span class="stand-number">Стенд № П-03</span>
-                            <p>Российский бренд с более чем 20-летним присутствием на рынке СНГ. Основное направление — тактическая обувь: зимние, летние и демисезонные берцы, тактические кеды и кроссовки, полуботинки. Garsing входит в топ-10 производителей тактической обуви в России. Производство сосредоточено преимущественно в Беларуси, часть продукции выпускается на российских и китайских заводах. Большинство моделей выполнено в унисекс-исполнении. Помимо обуви — одежда и снаряжение в стилистике military, urban и outdoor.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_3.jpg" loading="lazy" alt="Страйк Армс" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Страйк Армс</h4>
-                            <span class="stand-number">Стенд П-04</span>
-                            <p>Российский производитель страйкбольных приводов, основанный в 2022 году. Компания выпускает приводы на базе отечественного оружия: АК-12 (совместная разработка с Концерном Калашников), ОЦ-14 Гроза, КЕДР и БАСТАРД — включая bullpup-версию. Корпуса — преимущественно штампованная сталь, гирбоксы фрезерованные. На выставке будут показаны эксклюзивные новинки!</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_4.jpg" loading="lazy" alt="Страйк Арт" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Страйк Арт</h4>
-                            <span class="stand-number">Стенд П-04</span>
-                            <p>Российский производитель сертифицированной игровой пиротехники с 2013 года. В каталоге — ручные гранаты (РГС-4, РГС-6, РГД-5, М67, Ф-1, Егерь и другие), выстрелы для подствольных гранатомётов (Чекист, Москит, ВОГ Тюльпан), выстрелы для РПГ (Стрела, Игла), мины (МЭС, МСМ-50), дымовые шашки и гранаты, а также пусковые устройства и подствольные гранатомёты АК- и M-стайл. Вся продукция сертифицирована по ТР ТС 006/2011 (III класс опасности).</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_5.jpg" loading="lazy" alt="APEX" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>APEX</h4>
-                            <span class="stand-number">Стенд П-08</span>
-                            <p>Российский бренд одежды, обуви и аксессуаров для тактики, активного отдыха и города. В ассортименте — тактические костюмы и повседневная одежда, обувь для походов и городской среды, рюкзаки и сумки. В продукции используются собственные технологические решения: растяжимые ткани 4-Way Elastic, пропитка Teflon, быстросохнущие материалы Quick Dry, износостойкое переплетение HUORELEVA. В обуви — мембрана Apex-tex, подошва EVA+резина и система шнуровки Boa®.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_6.jpg" loading="lazy" alt="MAKO RP" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>MAKO RP</h4>
-                            <span class="stand-number">Стенд П-09</span>
-                            <p>Отечественный производитель тактической экипировки с собственным производством в Крыму. Полный цикл выпуска продукции позволяет компании контролировать качество и объёмы без зависимости от подрядчиков. Снаряжение ориентировано на широкий круг задач — походы, тренировки, служба. В основе — современные материалы с упором на защиту и свободу движения.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_7.jpg" loading="lazy" alt="Tornado Tactical" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Tornado Tactical</h4>
-                            <span class="stand-number">Стенд №Б-41</span>
-                            <p>Tornado Tactical– российский производительтактического снаряжения, экипировки и одежды, разработанных для бойцов спецподразделений, сотрудников силовых структур и любителей активного отдыха. Мы создаем продукцию,способную выдержать любые испытания, потому что разрабатываем ее совместно с профессионалами, которые ежедневно используют экипировку в экстремальных условиях.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_8.jpg" loading="lazy" alt="FORCE TIME" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>FORCE TIME</h4>
-                            <span class="stand-number">Стенд Б-23</span>
-                            <p>FORCE TIME — российский бренд тактических профессиональных перчаток. Разработка и пошив осуществляются на собственном предприятии в городе Екатеринбурге. Нас выбирают военные, спецназ, охотники, стрелки, автолюбители, любители активного отдыха и туризма, — все, кто знает цену защите рук.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_9.jpg" loading="lazy" alt="Компании ZTV" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Компании ZTV</h4>
-                            <span class="stand-number">Стенд Б-21</span>
-                            <p>Российский разработчик и производитель электронного оборудования для страйкбола. Компания создаёт технологические решения для игровой инфраструктуры, опираясь на опыт реальных игроков и обратную связь от мастерских. В линейке — контроллеры для ВВД, электронные мишени, универсальные точки интереса, PTT-кнопки и корпуса для пиропультов.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_10.jpg" loading="lazy" alt="WPC" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>WPC</h4>
-                            <span class="stand-number">Стенд Б-21</span>
-                            <p>WPC Airsoft— Производство доступных ВВД систем, кастомная сборка приводов на базе собственной ВВД системы под закрытые и открытые полигоны.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_11.jpg" loading="lazy" alt="Мастерская Кармартен" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Мастерская Кармартен</h4>
-                            <span class="stand-number">Стенд Б-22</span>
-                            <p>Мастерская с более чем 10-летним опытом создания украшений и аксессуаров по мотивам фантастических и игровых вселенных. Работают с деревом, кожей, металлом и 3D-печатью — всё функционально и рассчитано на повседневное использование. В ассортименте: заколки, гребни, очки и кулоны из дерева; сумки, ремни, доспехи и элементы косплея из кожи; диадемы, кольца, фляги и зажигалки из металла; фамильяры, антистресс-игрушки и миниатюры для НРИ из пластика.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_12.jpg" loading="lazy" alt="Магазин ORCTAC" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Магазин ORCTAC</h4>
-                            <span class="stand-number">Стенд № Б-27</span>
-                            <p>Магазин с одним из крупнейших ассортиментов шевронов и патчей в России. Сотни позиций на любой вкус — страйкбольная тематика, военная символика, игровые вселенные, кантриболы, патч-панели и изготовление на заказ. Помимо патчей — широкий выбор тактической одежды и снаряжения. На выставке покажут новинки тактических рубашек и полевых костюмов, а также полный спектр экипировки: разгрузки, боевые пояса, подсумки, защита, медицина, оптика и страйкбольные расходники.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_13.jpg" loading="lazy" alt="Not Today»." class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Not Today».</h4>
-                            <span class="stand-number">Стенд №О-02</span>
-                            <p>Наша задача — это произвести то, что призвано спасти жизнь. Все остальное — в Ваших руках и руках тех, кто Вас окружает. На нашем стенде: пптечки индивидуальные, медицинские укладки, турникеты, жгуты, гемостатики, перевязочные пакеты, подсумки под турникет, патчи и много другое.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_14.jpg" loading="lazy" alt="Black Buckle" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Black Buckle</h4>
-                            <span class="stand-number">Стенд № Б-28</span>
-                            <p>Black Buckle — разработчик и производитель тактического и EDC снаряжения для гражданских и военных. На рынке недавно, но сотрудники в теме уже давно, с опытом в отрасли более 10 лет.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_15.jpg" loading="lazy" alt="Patch Castoms" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>Patch Castoms</h4>
-                            <span class="stand-number">Стенд № Б-33</span>
-                            <p>Производство нашивок и шевронов любых видов.</p>
-                        </div>
-                    </article>
-                    <article class="exhibitor-card">
-                        <div class="exhibitor-logo-wrap">
-                            <img src="img/logos/logo_16.jpg" loading="lazy" alt="ФССО" class="company-logo">
-                        </div>
-                        <div class="exhibitor-body">
-                            <h4>ФССО</h4>
-                            <p>Федерация Страйкбола Свердловской области — группа региональной спортивной общественной организации. Основной целью Федерации является развитие и пропаганда страйкбола в России, поддержка в проведении военно-тактических игр, а также проведение спортивных соревнований, подготовка спортсменов и содействие развитию студенческого страйкбола в российских учебных заведениях.</p>
-                        </div>
-                    </article>
-                </div>
-                <div class="section-cta"><a href="exhibitors.html" class="btn-outline" data-goal="book_place">ЗАБРОНИРОВАТЬ СТЕНД</a></div>
-            </div>
-        </section>
-        
         <section class="map-section" aria-labelledby="route-title">
             <div class="container">
                 <div class="glass-panel map-container">
