@@ -3175,3 +3175,118 @@ body {
         margin-left: 24px;
     }
 }
+
+
+/* Russian Airsoft Awards */
+.raa-section {
+    padding: 0 max(60px, calc(50vw - 720px)) 70px;
+    position: relative;
+    z-index: 2;
+}
+
+.raa-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 48px;
+    align-items: center;
+    padding: 44px 48px;
+}
+
+.raa-logo {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.raa-kicker {
+    color: var(--gold);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    margin-bottom: 10px;
+}
+
+.raa-title {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.raa-text {
+    font-size: 17px;
+    line-height: 1.6;
+    color: #d4d4d4;
+    margin-bottom: 18px;
+}
+
+.raa-list {
+    list-style: none;
+    margin: 0 0 28px;
+    padding: 0;
+}
+
+.raa-list li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.raa-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 11px;
+    height: 11px;
+    background: var(--gold);
+}
+
+.raa-cta {
+    text-align: left;
+}
+
+@media (max-width: 960px) {
+    .raa-section {
+        padding: 0 24px 56px;
+    }
+
+    .raa-panel {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 28px;
+        padding: 28px 22px;
+    }
+
+    .raa-logo-wrap {
+        max-width: 420px;
+        margin: 0 auto;
+    }
+
+    .raa-body {
+        text-align: center;
+    }
+
+    .raa-title {
+        text-align: center;
+    }
+
+    .raa-list {
+        display: inline-block;
+        text-align: left;
+    }
+
+    .raa-cta {
+        text-align: center;
+    }
+}
+
+@media (max-width: 520px) {
+    .raa-section {
+        padding: 0 16px 48px;
+    }
+}
+
+.raa-title {
+    font-size: clamp(26px, 3vw, 40px);
+}
