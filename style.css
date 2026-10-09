@@ -3038,7 +3038,7 @@ body {
 
 .coverage-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
     margin-bottom: 36px;
 }
@@ -3071,6 +3071,11 @@ body {
     margin-top: 6px;
     color: #d4d4d4;
     font-size: 15px;
+}
+
+.coverage-note:hover,
+.coverage-note:focus-visible {
+    color: var(--gold);
 }
 
 .coverage-card--more {
